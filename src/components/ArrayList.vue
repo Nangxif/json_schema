@@ -7,14 +7,19 @@
     <el-row v-for="(item, index) in resultArray" :key="index">
       <el-col :span="1">{{ index + 1 }}</el-col>
       <el-col :span="23">
-        <div v-if="item.extra"></div>
-        <component
-          :is="upperFirst(i.extra && i.extra.component_type)"
-          :propData="i"
-          v-for="(i, id) in item"
-          :key="id"
-        ></component
-      ></el-col>
+        <div v-for="(i, id) in item" :key="id">
+          <!-- 数组里面，如果是正常的输入框 -->
+          <component
+            :is="upperFirst(i.extra && i.extra.component_type)"
+            :propData="i"
+            v-if="i.extra"
+          ></component>
+          <!-- 数组里面如果还有数组 -->
+          <div v-if="!i.extra && i.additionalItems">
+            <ArrayList :ArrayListData="i"></ArrayList>
+          </div>
+        </div>
+      </el-col>
     </el-row>
   </div>
 </template>
@@ -58,5 +63,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .arraylist {
+  .el-collapse-item__header {
+    margin-bottom: 15px;
+  }
 }
 </style>

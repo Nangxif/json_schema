@@ -109,6 +109,49 @@
                       "component_type":"input",
                       "validation":[]
                    }
+                },
+                "banners": {
+                  "title":"我是海报配置标题",
+                  "type": "array",
+                  "additionalItems":true,
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "",
+                        "title":"下标",
+                        "extra":{
+                            "component_type":"input",
+                            "validation":[]
+                          }
+                      },
+                      "image": {
+                        "type": "string",
+                        "title":"海报图片地址",
+                        "description": "海报图片地址",
+                        "extra":{
+                            "component_type":"input",
+                            "validation":[]
+                         }
+                      },
+                      "url": {
+                        "type": "string",
+                        "title":"跳转地址",
+                        "description": "跳转地址",
+                        "extra":{
+                            "component_type":"input",
+                            "validation":[]
+                         }
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "image",
+                      "url"
+                    ]
+                  },
+                  "description": "banner配置描述"
                 }
               },
               "required": [
