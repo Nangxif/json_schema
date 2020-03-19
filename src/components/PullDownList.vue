@@ -12,14 +12,17 @@
           class="child_list"
         >
           <!-- 一般情况下的嵌套 -->
-          <PullDownList :schema="item.properties"></PullDownList>
+          <PullDownList
+            :schema="item.properties"
+            @upData="upData"
+          ></PullDownList>
         </el-collapse-item>
       </el-collapse>
 
       <!-- 如果是数组类型的话 -->
       <div class="child_list-copy" v-else-if="item.items">
         <!-- 如果是array类型可拓展的话 -->
-        <ArrayList :ArrayListData="item"></ArrayList>
+        <ArrayList :ArrayListData="item" @upData="upData"></ArrayList>
       </div>
 
       <!-- 如果没有properties元素的话 -->
@@ -27,6 +30,7 @@
         <component
           :is="upperFirst(item.extra && item.extra.component_type)"
           :propData="item"
+          @upData="upData"
           v-if="item.extra"
         ></component>
       </div>
@@ -74,13 +78,20 @@ export default {
         "pattern",
         "format"
       ],
-      schemaData: []
+      schemaData: [],
+      resultObject: {}
     };
   },
   methods: {
     upperFirst,
-    handleChange(val) {
-      console.log(val);
+    handleChange() {},
+    upData(val) {
+      Object.entries(val).forEach(item => {
+        this.resultObject[item[0]] = item[1];
+      });
+      // 记得删除isNested，因为会从Input带上来
+      delete this.resultObject.isNested;
+      this.$emit("upData", this.resultObject);
     }
   },
   mounted() {
@@ -104,7 +115,6 @@ export default {
         });
       });
     }
-    console.log(this.schemaData);
   }
 };
 </script>

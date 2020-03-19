@@ -5,9 +5,11 @@
         :title="ArrayListDataCopy.title"
         :name="ArrayListDataCopy.key"
       >
-        <el-row v-for="(item, index) in resultArray" :key="index">
+        <el-row v-for="(item, index) in showArray" :key="index">
           <el-col :span="1" v-if="ArrayListDataCopy.additionalItems"
-            ><el-button round size="small">{{ index + 1 }}</el-button></el-col
+            ><el-button round size="small" class="indexButton">{{
+              index + 1
+            }}</el-button></el-col
           >
           <el-col :span="ArrayListDataCopy.additionalItems ? 23 : 24">
             <div v-for="(i, id) in item" :key="id">
@@ -26,19 +28,25 @@
               <!-- 数组里面，如果是正常的输入框 -->
               <component
                 :is="upperFirst(i.extra && i.extra.component_type)"
-                :propData="i"
+                :propData="{
+                  ...i,
+                  arrayIndex: index,
+                  isNested: ArrayListDataCopy.isNested
+                }"
+                @upData="upData"
                 v-if="i.extra"
               ></component>
               <!-- 数组里面如果还有数组 -->
-              <ArrayList :ArrayListData="i" v-else></ArrayList>
+              <ArrayList
+                :ArrayListData="{ ...i, isNested: true }"
+                @upData="upData"
+                v-else
+              ></ArrayList>
             </div>
           </el-col>
         </el-row>
       </el-collapse-item>
     </el-collapse>
-    <!-- <div role="button" tabindex="0" class="el-collapse-item__header">
-      {{ ArrayListDataCopy.title }}
-    </div> -->
   </div>
 </template>
 <script>
@@ -57,16 +65,41 @@ export default {
     return {
       activeNames: ["1"],
       ArrayListDataCopy: this.ArrayListData,
-      resultArray: []
+      showArray: [],
+      resultArray: [],
+      resultObject: {} //这个用来先生成对象，然后再加入到resultArray里面
     };
   },
   methods: {
     upperFirst,
     addItem() {
-      this.resultArray.push(this.resultArray[0]);
+      this.showArray.push(this.showArray[0]);
+      this.resultArray.push({});
     },
-    handleChange(val) {
-      console.log(val);
+    handleChange() {
+      //   console.log(val);
+    },
+    upData(val) {
+      Object.entries(val).forEach(item => {
+        this.resultArray[val.arrayIndex] = {
+          ...this.resultArray[val.arrayIndex],
+          [item[0]]: item[1]
+        };
+      });
+      //   如果是最后一层，父层级的话
+      if (!val.isNested) {
+        delete this.resultArray[val.arrayIndex].arrayIndex;
+        delete this.resultArray[val.arrayIndex].isNested;
+        this.$emit("upData", {
+          [this.ArrayListDataCopy.key]: this.resultArray
+        });
+      } else {
+        //   如果是嵌套的话，记得带上数组序号方便查找
+        this.$emit("upData", {
+          [this.ArrayListDataCopy.key]: this.resultArray,
+          arrayIndex: this.resultArray[val.arrayIndex].arrayIndex
+        });
+      }
     }
   },
   mounted() {
@@ -78,21 +111,24 @@ export default {
           ...item[1]
         });
       });
-      this.resultArray.push(arr);
+      this.showArray.push(arr);
     }
   }
 };
 </script>
 <style lang="scss" scoped>
 .arraylist {
+  .indexButton {
+    margin-top: 15px;
+  }
   .addButton {
     position: relative;
-    height: 60px;
+    height: 65px;
     .addButton_item {
       margin: auto;
       position: absolute;
       right: 0px;
-      top: 0px;
+      top: 15px;
     }
   }
 }

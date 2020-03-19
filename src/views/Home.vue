@@ -8,11 +8,16 @@
         <el-row>
           <el-col :span="24">
             <div class="pulldown">
-              <PullDownList :schema="dataJson"></PullDownList>
+              <PullDownList :schema="dataJson" @upData="upData"></PullDownList>
             </div>
+
+            <el-button round @click="getResult">生成JSON</el-button>
           </el-col>
         </el-row>
       </el-col>
+    </el-row>
+    <el-row>
+      <div>{{ resultJSON }}</div>
     </el-row>
   </div>
 </template>
@@ -24,11 +29,22 @@ export default {
   name: "Home",
   data() {
     return {
-      dataJson
+      dataJson,
+      result: {},
+      resultJSON: {}
     };
   },
   components: {
     PullDownList
+  },
+  methods: {
+    upData(val) {
+      this.result = val;
+    },
+    getResult() {
+      this.resultJSON = {};
+      this.resultJSON = { ...this.result };
+    }
   },
   mounted() {
     // console.log(dataJson);

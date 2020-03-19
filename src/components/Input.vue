@@ -1,8 +1,8 @@
 <template>
   <div class="inp">
     <el-form ref="form" :model="form" label-width="130px">
-      <el-form-item :label="propDataCopy.title">
-        <el-input v-model="propDataCopy.Vmodal"></el-input>
+      <el-form-item :label="form.title">
+        <el-input v-model="form[propDataCopy.key]" @change="upData"></el-input>
       </el-form-item>
     </el-form>
   </div>
@@ -24,13 +24,31 @@ export default {
       form: {}
     };
   },
+  methods: {
+    upData() {
+      // 一旦修改了输入框的内容，要及时提交输入的信息，要区分有没有带数组的序号
+      this.$emit(
+        "upData",
+        this.propDataCopy.arrayIndex == undefined
+          ? {
+              [this.propDataCopy.key]: this.form[this.propDataCopy.key],
+              isNested: this.propDataCopy.isNested
+            }
+          : {
+              [this.propDataCopy.key]: this.form[this.propDataCopy.key],
+              arrayIndex: this.propDataCopy.arrayIndex,
+              isNested: this.propDataCopy.isNested
+            }
+      );
+    }
+  },
   created() {
     this.propDataCopy = {
-      Vmodal: "",
       ...this.propData
     };
     this.form = {
-      [this.propDataCopy.title]: this.propDataCopy.Vmodal
+      [this.propDataCopy.key]: "",
+      ...this.propDataCopy
     };
   }
 };
