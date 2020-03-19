@@ -1,2 +1,6 @@
 > 1%
-last 2 versions
+ios >= 9
+android >= 5
+chrome >= 36
+not dead
+not op_mini all

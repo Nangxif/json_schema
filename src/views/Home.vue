@@ -1,18 +1,52 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <el-row>
+      <el-col :span="8">
+        <div class="JsonInput"></div>
+      </el-col>
+      <el-col :span="16">
+        <el-row>
+          <el-col :span="24">
+            <div class="pulldown">
+              <PullDownList :schema="dataJson"></PullDownList>
+            </div>
+          </el-col>
+        </el-row>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
-
+import PullDownList from "../components/PullDownList";
+const dataJson = require("../files/data.json");
 export default {
   name: "Home",
+  data() {
+    return {
+      dataJson
+    };
+  },
   components: {
-    HelloWorld
+    PullDownList
+  },
+  mounted() {
+    // console.log(dataJson);
   }
 };
 </script>
+<style lang="scss" scoped>
+.JsonInput {
+  width: 100%;
+  height: 800px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+}
+.pulldown {
+  box-sizing: border-box;
+  padding-left: 20px;
+  width: 100%;
+  height: 800px;
+  overflow-y: auto;
+}
+</style>

@@ -1,5 +1,5 @@
 {
-  "name": "pull-down-list",
+  "name": "json_schema",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "core-js": "^3.6.4",
+    "element-ui": "^2.13.0",
+    "lodash": "^4.17.15",
     "vue": "^2.6.11",
     "vue-router": "^3.1.5",
     "vuex": "^3.1.2"
