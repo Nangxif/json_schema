@@ -82,6 +82,7 @@
             "additionalItems":true,
             "items": {
               "type": "object",
+              "title":"海报项配置",
               "properties": {
                 "id": {
                   "type": "string",

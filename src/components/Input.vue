@@ -4,6 +4,16 @@
     <!-- 当前序号{{ propDataCopy.currentIndex }} -->
     <el-form ref="form" :model="form" label-width="130px">
       <el-form-item :label="form.title">
+        <div class="inp_tooltip">
+          <el-tooltip
+            class="item"
+            effect="dark"
+            :content="propDataCopy.description || '无'"
+            placement="right"
+          >
+            <el-button></el-button>
+          </el-tooltip>
+        </div>
         <el-input v-model="form[propDataCopy.key]" @change="upData"></el-input>
       </el-form-item>
     </el-form>
@@ -58,5 +68,17 @@ export default {
 </script>
 <style lang="scss" scoped>
 .inp {
+  .inp_tooltip {
+    position: absolute;
+    left: -130px;
+    width: 130px;
+    top: 0px;
+    height: 100%;
+    .el-tooltip {
+      width: 130px;
+      height: 100%;
+      opacity: 0;
+    }
+  }
 }
 </style>

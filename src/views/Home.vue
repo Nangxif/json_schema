@@ -1,29 +1,43 @@
 <template>
   <div class="home">
-    <el-row>
-      <el-col :span="8">
-        <div class="JsonInput"></div>
-        <el-button round @click="getResult" class="homeButton"
-          >生成模板</el-button
-        >
-      </el-col>
-      <el-col :span="16">
-        <el-row>
-          <el-col :span="24">
-            <div class="pulldown">
-              <PullDownList :schema="dataJson" @upData="upData"></PullDownList>
-            </div>
-
-            <el-button round @click="getResult" class="homeButton"
-              >生成JSON</el-button
+    <el-container>
+      <el-header>
+        <div class="title">Json-schema</div>
+        <div class="title_tip">
+          请输入格式正确的json，点击“生成模板”，在模板上输入相应的数据，点击“生成JSON”，即可生成数据。
+        </div>
+      </el-header>
+      <el-main
+        ><el-row>
+          <el-col :span="8">
+            <textarea class="JsonInput" v-model="JsonInputContent"></textarea>
+            <el-button round @click="operateHTML" class="homeButton"
+              >生成模板</el-button
             >
           </el-col>
+          <el-col :span="16">
+            <el-row>
+              <el-col :span="24">
+                <div class="pulldown">
+                  <PullDownList
+                    :schema="dataJson"
+                    @upData="upData"
+                    v-if="isShowJsonHtml"
+                  ></PullDownList>
+                </div>
+
+                <el-button round @click="getResult" class="homeButton"
+                  >生成JSON</el-button
+                >
+              </el-col>
+            </el-row>
+          </el-col>
         </el-row>
-      </el-col>
-    </el-row>
-    <el-row>
-      <pre>{{ resultJSON }}</pre>
-    </el-row>
+        <el-row>
+          <pre>{{ resultJSON }}</pre>
+        </el-row></el-main
+      >
+    </el-container>
   </div>
 </template>
 
@@ -34,9 +48,11 @@ export default {
   name: "Home",
   data() {
     return {
-      dataJson,
+      dataJson: {},
+      JsonInputContent: JSON.stringify(dataJson),
       result: {},
-      resultJSON: {}
+      resultJSON: {},
+      isShowJsonHtml: false
     };
   },
   components: {
@@ -45,6 +61,16 @@ export default {
   methods: {
     upData(val) {
       this.result = val;
+    },
+    operateHTML() {
+      // console.log(JSON.parse(this.JsonInputContent));
+      try {
+        this.dataJson = JSON.parse(this.JsonInputContent);
+        this.isShowJsonHtml = false;
+        this.isShowJsonHtml = true;
+      } catch (e) {
+        this.$message.error("输入的JSON格式有误");
+      }
     },
     getResult() {
       this.resultJSON = {};
@@ -57,6 +83,15 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.title {
+  font-size: 30px;
+  font-weight: 600;
+  color: black;
+}
+.title_tip {
+  margin-top: 5px;
+  color: rgba(0, 0, 0, 0.65);
+}
 .JsonInput {
   width: 100%;
   height: 800px;
