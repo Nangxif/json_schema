@@ -20,7 +20,7 @@
       </el-collapse>
 
       <!-- 如果是数组类型的话 -->
-      <div class="child_list-copy" v-else-if="item.items">
+      <div class="child_list" v-else-if="item.items">
         <!-- 如果是array类型可拓展的话 -->
         <ArrayList :ArrayListData="item" @upData="upData"></ArrayList>
       </div>
@@ -124,12 +124,6 @@ export default {
   .child_list {
     width: 98%;
     margin-left: 2%;
-  }
-  .child_list-copy {
-    width: 98%;
-    padding: 5px 0px;
-    padding-left: 2%;
-    border-bottom: 1px solid #ebeef5;
   }
 }
 </style>

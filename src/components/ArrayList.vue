@@ -1,65 +1,60 @@
 <template>
   <div class="arraylist">
-    <el-collapse v-model="activeNames" @change="handleChange">
-      <el-collapse-item
-        :title="ArrayListDataCopy.title"
-        :name="ArrayListDataCopy.key"
-      >
-        <el-row v-for="(item, index) in showArray" :key="index">
-          <!-- 列表序号{{
+    <div class="arrayList_title">
+      {{ ArrayListDataCopy.title }}
+      <div v-if="ArrayListDataCopy.additionalItems" class="addButton">
+        <el-button round size="middle" @click="addItem" class="addButton_item"
+          >添加</el-button
+        >
+      </div>
+    </div>
+    <div class="child_list" v-for="(item, index) in showArray" :key="index">
+      <el-collapse v-model="activeNames" @change="handleChange">
+        <el-collapse-item :title="ArrayListDataCopy.items.title" :name="index">
+          <el-row>
+            <!-- 列表序号{{
             !ArrayListDataCopy.isNested ? index : ArrayListDataCopy.arrayIndex
           }} -->
-          <el-col :span="1" v-if="ArrayListDataCopy.additionalItems"
-            ><el-button round size="small" class="indexButton">{{
-              index + 1
-            }}</el-button></el-col
-          >
-          <el-col :span="ArrayListDataCopy.additionalItems ? 23 : 24">
-            <div v-for="(i, id) in item" :key="id">
-              <div
-                v-if="id == 0 && ArrayListDataCopy.additionalItems"
-                class="addButton"
-              >
-                <el-button
-                  round
-                  size="middle"
-                  @click="addItem"
-                  class="addButton_item"
-                  >添加</el-button
-                >
+            <el-col :span="1" v-if="ArrayListDataCopy.additionalItems"
+              ><el-button round size="small" class="indexButton">{{
+                index + 1
+              }}</el-button></el-col
+            >
+            <el-col :span="ArrayListDataCopy.additionalItems ? 23 : 24">
+              <div v-for="(i, id) in item" :key="id">
+                <!-- 数组里面，如果是正常的输入框 -->
+                <!-- 要带上序号-->
+                <component
+                  :is="upperFirst(i.extra && i.extra.component_type)"
+                  :propData="{
+                    ...i,
+                    currentIndex: index,
+                    arrayIndex: !ArrayListDataCopy.isNested
+                      ? index
+                      : ArrayListDataCopy.arrayIndex,
+                    isNested: ArrayListDataCopy.isNested
+                  }"
+                  @upData="upData"
+                  v-if="i.extra"
+                ></component>
+                <!-- 数组里面如果还有数组isNested要设置为true -->
+                <ArrayList
+                  :ArrayListData="{
+                    ...i,
+                    arrayIndex: !ArrayListDataCopy.isNested
+                      ? index
+                      : ArrayListDataCopy.arrayIndex,
+                    isNested: true
+                  }"
+                  @upData="upData"
+                  v-else
+                ></ArrayList>
               </div>
-              <!-- 数组里面，如果是正常的输入框 -->
-              <!-- 要带上序号-->
-              <component
-                :is="upperFirst(i.extra && i.extra.component_type)"
-                :propData="{
-                  ...i,
-                  currentIndex: index,
-                  arrayIndex: !ArrayListDataCopy.isNested
-                    ? index
-                    : ArrayListDataCopy.arrayIndex,
-                  isNested: ArrayListDataCopy.isNested
-                }"
-                @upData="upData"
-                v-if="i.extra"
-              ></component>
-              <!-- 数组里面如果还有数组isNested要设置为true -->
-              <ArrayList
-                :ArrayListData="{
-                  ...i,
-                  arrayIndex: !ArrayListDataCopy.isNested
-                    ? index
-                    : ArrayListDataCopy.arrayIndex,
-                  isNested: true
-                }"
-                @upData="upData"
-                v-else
-              ></ArrayList>
-            </div>
-          </el-col>
-        </el-row>
-      </el-collapse-item>
-    </el-collapse>
+            </el-col>
+          </el-row>
+        </el-collapse-item>
+      </el-collapse>
+    </div>
   </div>
 </template>
 <script>
@@ -76,7 +71,7 @@ export default {
   },
   data() {
     return {
-      activeNames: ["1"],
+      activeNames: ["2"],
       ArrayListDataCopy: this.ArrayListData,
       showArray: [],
       resultArray: [],
@@ -152,18 +147,24 @@ export default {
 </script>
 <style lang="scss" scoped>
 .arraylist {
-  .indexButton {
-    margin-top: 15px;
-  }
-  .addButton {
+  .arrayList_title {
+    width: 100%;
+    height: 48px;
+    line-height: 48px;
     position: relative;
-    height: 65px;
-    .addButton_item {
+    .addButton {
       margin: auto;
       position: absolute;
       right: 0px;
-      top: 15px;
+      top: 0px;
     }
+  }
+  .child_list {
+    width: 98%;
+    margin-left: 2%;
+  }
+  .indexButton {
+    margin-top: 15px;
   }
 }
 </style>

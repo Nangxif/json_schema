@@ -114,9 +114,10 @@
                 "banner": {
                   "title":"我是海报配置标题",
                   "type": "array",
-                  "additionalItems":true,
+                  "additionalItems":false,
                   "items": {
                     "type": "object",
+                    "title":"海报项配置",
                     "properties": {
                       "id": {
                         "type": "string",
