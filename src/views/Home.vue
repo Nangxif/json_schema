@@ -3,6 +3,9 @@
     <el-row>
       <el-col :span="8">
         <div class="JsonInput"></div>
+        <el-button round @click="getResult" class="homeButton"
+          >生成模板</el-button
+        >
       </el-col>
       <el-col :span="16">
         <el-row>
@@ -11,13 +14,15 @@
               <PullDownList :schema="dataJson" @upData="upData"></PullDownList>
             </div>
 
-            <el-button round @click="getResult">生成JSON</el-button>
+            <el-button round @click="getResult" class="homeButton"
+              >生成JSON</el-button
+            >
           </el-col>
         </el-row>
       </el-col>
     </el-row>
     <el-row>
-      <div>{{ resultJSON }}</div>
+      <pre>{{ resultJSON }}</pre>
     </el-row>
   </div>
 </template>
@@ -60,9 +65,13 @@ export default {
 }
 .pulldown {
   box-sizing: border-box;
-  padding-left: 20px;
+  padding: 0px 20px;
   width: 100%;
   height: 800px;
   overflow-y: auto;
+}
+.homeButton {
+  display: block;
+  margin: 15px auto;
 }
 </style>

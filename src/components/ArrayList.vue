@@ -6,6 +6,9 @@
         :name="ArrayListDataCopy.key"
       >
         <el-row v-for="(item, index) in showArray" :key="index">
+          <!-- 列表序号{{
+            !ArrayListDataCopy.isNested ? index : ArrayListDataCopy.arrayIndex
+          }} -->
           <el-col :span="1" v-if="ArrayListDataCopy.additionalItems"
             ><el-button round size="small" class="indexButton">{{
               index + 1
@@ -26,19 +29,29 @@
                 >
               </div>
               <!-- 数组里面，如果是正常的输入框 -->
+              <!-- 要带上序号-->
               <component
                 :is="upperFirst(i.extra && i.extra.component_type)"
                 :propData="{
                   ...i,
-                  arrayIndex: index,
+                  currentIndex: index,
+                  arrayIndex: !ArrayListDataCopy.isNested
+                    ? index
+                    : ArrayListDataCopy.arrayIndex,
                   isNested: ArrayListDataCopy.isNested
                 }"
                 @upData="upData"
                 v-if="i.extra"
               ></component>
-              <!-- 数组里面如果还有数组 -->
+              <!-- 数组里面如果还有数组isNested要设置为true -->
               <ArrayList
-                :ArrayListData="{ ...i, isNested: true }"
+                :ArrayListData="{
+                  ...i,
+                  arrayIndex: !ArrayListDataCopy.isNested
+                    ? index
+                    : ArrayListDataCopy.arrayIndex,
+                  isNested: true
+                }"
                 @upData="upData"
                 v-else
               ></ArrayList>
@@ -74,27 +87,48 @@ export default {
     upperFirst,
     addItem() {
       this.showArray.push(this.showArray[0]);
+      // 添加的时候要给最终生成的数组添加{}
       this.resultArray.push({});
     },
     handleChange() {
       //   console.log(val);
     },
     upData(val) {
-      Object.entries(val).forEach(item => {
-        this.resultArray[val.arrayIndex] = {
-          ...this.resultArray[val.arrayIndex],
-          [item[0]]: item[1]
-        };
-      });
       //   如果是最后一层，父层级的话
       if (!val.isNested) {
+        // 如果是嵌套的ArrayList，携带的参数可能有arrayIndex和isNested
+        Object.entries(val).forEach(item => {
+          this.resultArray[val.arrayIndex] = {
+            ...this.resultArray[val.arrayIndex], //原来对象已经有的数据
+            [item[0]]: item[1] //新增的数据
+          };
+        });
+        // 最后一层还要检测一下是不是有整个对象为空的情况，然后进行去除？
         delete this.resultArray[val.arrayIndex].arrayIndex;
         delete this.resultArray[val.arrayIndex].isNested;
+        delete this.resultArray[val.arrayIndex].currentIndex;
+        // 清除数组里面的arrayIndex，isNested和currentIndex
+        Object.entries(this.resultArray[val.arrayIndex]).forEach(item => {
+          if (Array.isArray(item[1])) {
+            item[1].forEach((i, idx) => {
+              delete this.resultArray[val.arrayIndex][item[0]][idx].arrayIndex;
+              delete this.resultArray[val.arrayIndex][item[0]][idx]
+                .currentIndex;
+              delete this.resultArray[val.arrayIndex][item[0]][idx].isNested;
+            });
+          }
+        });
         this.$emit("upData", {
           [this.ArrayListDataCopy.key]: this.resultArray
         });
       } else {
-        //   如果是嵌套的话，记得带上数组序号方便查找
+        Object.entries(val).forEach(item => {
+          this.resultArray[val.currentIndex] = {
+            ...this.resultArray[val.currentIndex], //原来对象已经有的数据
+            [item[0]]: item[1] //新增的数据
+          };
+        });
+        //   如果是嵌套的话，记得带上数组序号方便查找，这里的val.arrayIndex之所以能正常叠加，是因为在component的时候，有数据传入
         this.$emit("upData", {
           [this.ArrayListDataCopy.key]: this.resultArray,
           arrayIndex: this.resultArray[val.arrayIndex].arrayIndex

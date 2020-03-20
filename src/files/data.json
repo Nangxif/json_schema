@@ -110,10 +110,10 @@
                       "validation":[]
                    }
                 },
-                "banners": {
+                "banner": {
                   "title":"我是海报配置标题",
                   "type": "array",
-                  "additionalItems":false,
+                  "additionalItems":true,
                   "items": {
                     "type": "object",
                     "properties": {
