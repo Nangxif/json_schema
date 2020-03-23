@@ -13,7 +13,7 @@
         >
           <!-- 一般情况下的嵌套 -->
           <PullDownList
-            :schema="item.properties"
+            :schema="{ ...item.properties, level: schemaCopy.level + 1 }"
             @upData="upData"
           ></PullDownList>
         </el-collapse-item>
@@ -22,14 +22,21 @@
       <!-- 如果是数组类型的话 -->
       <div class="child_list" v-else-if="item.items">
         <!-- 如果是array类型可拓展的话 -->
-        <ArrayList :ArrayListData="item" @upData="upData"></ArrayList>
+        <ArrayList
+          :ArrayListData="{
+            ...item,
+            arrayIndex1: index,
+            level: schemaCopy.level
+          }"
+          @upData="upData"
+        ></ArrayList>
       </div>
 
       <!-- 如果没有properties元素的话 -->
       <div class="child_list" v-else>
         <component
           :is="upperFirst(item.extra && item.extra.component_type)"
-          :propData="item"
+          :propData="{ ...item, arrayIndex1: index, level: schemaCopy.level }"
           @upData="upData"
           v-if="item.extra"
         ></component>
@@ -91,6 +98,7 @@ export default {
       });
       // 记得删除isNested，因为会从Input带上来
       delete this.resultObject.isNested;
+      delete this.resultObject.level;
       this.$emit("upData", this.resultObject);
     }
   },
@@ -101,6 +109,9 @@ export default {
     let b = Object.keys(this.schemaCopy).find(item => {
       return this.keys.includes(item);
     });
+    if (!this.schemaCopy.level) {
+      this.schemaCopy.level = 1;
+    }
     if (!a) {
       // 说明是第一层
       this.schemaData.push({

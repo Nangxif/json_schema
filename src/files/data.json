@@ -71,7 +71,81 @@
                               }
                       ]
                     }
-                }
+                },
+                "short_config":{
+                  "title":"短链配置",
+                  "type":"object",
+                  "properties":{
+                      "short_url":{
+                          "title":"短链地址",
+                          "type":"string",
+                          "description":"短链地址的描述",
+                          "extra":{
+                            "component_type":"input",
+                            "component_props":{
+                              "behavior":"NORMAL"
+                            },
+                            "validation":[
+                              {
+                                "type":"required",
+                                "message":"必填"
+                              },
+                              {
+                                "type":"minLength",
+                                "message":"不能小于10",
+                                "param":"10"
+                              }
+                            ]
+                          }
+                      },
+                      "app_share_short_url":{
+                          "title":"app分享短链配置",
+                          "type":"string",
+                          "description":"app分享短链配置的描述",
+                          "extra":{
+                            "component_type":"input",
+                            "validation":[]
+                          }
+                      },
+                      "wx_share_short_url":{
+                          "title":"wx分享短链配置",
+                          "type":"string",
+                          "description":"wx分享短链配置的描述",
+                          "extra":{
+                            "component_type":"input",
+                            "validation":[
+                              {
+                                 "type":"pattern",
+                                 "message":"正则不匹配",
+                                 "param":"(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]"
+                              }
+                            ]
+                          }
+                      },
+                      "poster_share_short_url":{
+                          "type":"string",
+                          "title":"wx分享短链配置",
+                          "description":"海报分享短链配置的描述",
+                          "extra":{
+                            "component_type":"input",
+                            "validation":[
+                                    {
+                                      "type": "customValidate",
+                                      "message": "我是自定义错误提示",
+                                      "param": {
+                                        "type": "js",
+                                        "source": "function validateRule(value) {\nreturn false\n }",
+                                        "compiled": "function main(){\n    \"use strict\";\n\nvar __compiledFunc__ = function validateRule(value) {\n  return false;\n};\n    return __compiledFunc__.apply(this, arguments);\n  }",
+                                        "error": {}
+                                      }
+                                    }
+                            ]
+                          }
+                      }
+                  },
+                  "description":"短链配置的描述",
+                  "required":["short_url","app_share_short_url"]
+              }
             },
             "description":"短链配置的描述",
             "required":["short_url","app_share_short_url"]
@@ -114,7 +188,7 @@
                 "banner": {
                   "title":"我是海报配置标题",
                   "type": "array",
-                  "additionalItems":false,
+                  "additionalItems":true,
                   "items": {
                     "type": "object",
                     "title":"海报项配置",

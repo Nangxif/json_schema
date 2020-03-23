@@ -24,26 +24,30 @@
               <div v-for="(i, id) in item" :key="id">
                 <!-- 数组里面，如果是正常的输入框 -->
                 <!-- 要带上序号-->
+                <!-- arrayIndex: !ArrayListDataCopy.isNested
+                      ? index
+                      : ArrayListDataCopy.arrayIndex, -->
                 <component
                   :is="upperFirst(i.extra && i.extra.component_type)"
                   :propData="{
                     ...i,
-                    currentIndex: index,
-                    arrayIndex: !ArrayListDataCopy.isNested
-                      ? index
-                      : ArrayListDataCopy.arrayIndex,
+                    currentIndex: id,
+                    [`arrayIndex${ArrayListDataCopy.level + 1}`]: index,
+                    level: ArrayListDataCopy.level + 1,
                     isNested: ArrayListDataCopy.isNested
                   }"
                   @upData="upData"
                   v-if="i.extra"
                 ></component>
                 <!-- 数组里面如果还有数组isNested要设置为true -->
+                <!-- arrayIndex: !ArrayListDataCopy.isNested
+                      ? index
+                      : ArrayListDataCopy.arrayIndex, -->
                 <ArrayList
                   :ArrayListData="{
                     ...i,
-                    arrayIndex: !ArrayListDataCopy.isNested
-                      ? index
-                      : ArrayListDataCopy.arrayIndex,
+                    [`arrayIndex${ArrayListDataCopy.level + 1}`]: index,
+                    level: ArrayListDataCopy.level + 1,
                     isNested: true
                   }"
                   @upData="upData"
@@ -93,40 +97,59 @@ export default {
       if (!val.isNested) {
         // 如果是嵌套的ArrayList，携带的参数可能有arrayIndex和isNested
         Object.entries(val).forEach(item => {
-          this.resultArray[val.arrayIndex] = {
-            ...this.resultArray[val.arrayIndex], //原来对象已经有的数据
+          this.resultArray[val[`arrayIndex${val.level}`]] = {
+            ...this.resultArray[val[`arrayIndex${val.level}`]], //原来对象已经有的数据
             [item[0]]: item[1] //新增的数据
           };
         });
         // 最后一层还要检测一下是不是有整个对象为空的情况，然后进行去除？
-        delete this.resultArray[val.arrayIndex].arrayIndex;
-        delete this.resultArray[val.arrayIndex].isNested;
-        delete this.resultArray[val.arrayIndex].currentIndex;
+        delete this.resultArray[val[`arrayIndex${val.level}`]][
+          `arrayIndex${val.level}`
+        ];
+        delete this.resultArray[val[`arrayIndex${val.level}`]].isNested;
+        delete this.resultArray[val[`arrayIndex${val.level}`]].level;
         // 清除数组里面的arrayIndex，isNested和currentIndex
-        Object.entries(this.resultArray[val.arrayIndex]).forEach(item => {
-          if (Array.isArray(item[1])) {
-            item[1].forEach((i, idx) => {
-              delete this.resultArray[val.arrayIndex][item[0]][idx].arrayIndex;
-              delete this.resultArray[val.arrayIndex][item[0]][idx]
-                .currentIndex;
-              delete this.resultArray[val.arrayIndex][item[0]][idx].isNested;
-            });
+        Object.entries(this.resultArray[val[`arrayIndex${val.level}`]]).forEach(
+          item => {
+            // console.log(item);
+            if (Array.isArray(item[1])) {
+              item[1].forEach((i, idx) => {
+                // console.log(item[0],i);
+                delete this.resultArray[val[`arrayIndex${val.level}`]][item[0]][
+                  idx
+                ][`arrayIndex${val.level}`];
+                delete this.resultArray[val[`arrayIndex${val.level}`]][item[0]][
+                  idx
+                ].level;
+                delete this.resultArray[val[`arrayIndex${val.level}`]][item[0]][
+                  idx
+                ].isNested;
+              });
+            }
           }
-        });
+        );
         this.$emit("upData", {
           [this.ArrayListDataCopy.key]: this.resultArray
         });
       } else {
         Object.entries(val).forEach(item => {
-          this.resultArray[val.currentIndex] = {
-            ...this.resultArray[val.currentIndex], //原来对象已经有的数据
+          this.resultArray[val[`arrayIndex${val.level}`]] = {
+            ...this.resultArray[val[`arrayIndex${val.level}`]], //原来对象已经有的数据
             [item[0]]: item[1] //新增的数据
           };
         });
+        delete this.resultArray[val[`arrayIndex${val.level}`]][
+          `arrayIndex${val.level}`
+        ];
+        delete this.resultArray[val[`arrayIndex${val.level}`]].level;
         //   如果是嵌套的话，记得带上数组序号方便查找，这里的val.arrayIndex之所以能正常叠加，是因为在component的时候，有数据传入
         this.$emit("upData", {
           [this.ArrayListDataCopy.key]: this.resultArray,
-          arrayIndex: this.resultArray[val.arrayIndex].arrayIndex
+          level: this.ArrayListDataCopy.level,
+          [`arrayIndex${this.ArrayListDataCopy.level}`]: this.ArrayListDataCopy[
+            `arrayIndex${this.ArrayListDataCopy.level}`
+          ],
+          isNested: true
         });
       }
     }

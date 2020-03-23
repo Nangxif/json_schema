@@ -1,14 +1,15 @@
 <template>
   <div class="inp">
-    <!-- 列表序号{{ propDataCopy.arrayIndex }} -->
-    <!-- 当前序号{{ propDataCopy.currentIndex }} -->
+    <!-- 第几层：{{ propDataCopy.level }} 排序：{{
+      propDataCopy[`arrayIndex${propDataCopy.level}`]
+    }} -->
     <el-form ref="form" :model="form" label-width="130px">
       <el-form-item :label="form.title">
         <div class="inp_tooltip">
           <el-tooltip
             class="item"
             effect="dark"
-            :content="propDataCopy.description || '无'"
+            :content="propDataCopy.key || '无'"
             placement="right"
           >
             <el-button></el-button>
@@ -41,15 +42,18 @@ export default {
       // 一旦修改了输入框的内容，要及时提交输入的信息，要区分有没有带数组的序号
       this.$emit(
         "upData",
-        this.propDataCopy.currentIndex == undefined
+        this.propDataCopy[`arrayIndex${this.propDataCopy.level}`] == undefined
           ? {
               [this.propDataCopy.key]: this.form[this.propDataCopy.key],
+              level: this.propDataCopy.level,
               isNested: this.propDataCopy.isNested
             }
           : {
               [this.propDataCopy.key]: this.form[this.propDataCopy.key],
-              currentIndex: this.propDataCopy.currentIndex,
-              arrayIndex: this.propDataCopy.arrayIndex,
+              [`arrayIndex${this.propDataCopy.level}`]: this.propDataCopy[
+                `arrayIndex${this.propDataCopy.level}`
+              ],
+              level: this.propDataCopy.level,
               isNested: this.propDataCopy.isNested
             }
       );
