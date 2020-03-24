@@ -51,7 +51,7 @@ export default {
       dataJson: {},
       JsonInputContent: JSON.stringify(dataJson),
       result: {},
-      resultJSON: {},
+      resultJSON: "还没生成过JSON",
       isShowJsonHtml: false
     };
   },
@@ -60,6 +60,9 @@ export default {
   },
   methods: {
     upData(val) {
+      if (this.resultJSON != "还没生成过JSON") {
+        this.resultJSON = "表单已被修改过，请重新点击生成";
+      }
       this.result = val;
     },
     operateHTML() {
@@ -74,7 +77,7 @@ export default {
     },
     getResult() {
       this.resultJSON = {};
-      this.resultJSON = { ...this.result };
+      Object.assign(this.resultJSON, this.result);
     }
   },
   mounted() {

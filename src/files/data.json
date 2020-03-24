@@ -12,6 +12,11 @@
                     "description":"短链地址的描述",
                     "extra":{
                       "component_type":"input",
+                      "component_attrs": {
+                        "type": "text",
+                        "show-password": true,
+                        "clearable": true
+                      },
                       "component_props":{
                         "behavior":"NORMAL"
                       },
@@ -104,7 +109,11 @@
                           "description":"app分享短链配置的描述",
                           "extra":{
                             "component_type":"input",
-                            "validation":[]
+                            "validation":[
+                              {
+                                "type":"required",
+                                "message":"必填"
+                              }]
                           }
                       },
                       "wx_share_short_url":{
@@ -173,7 +182,11 @@
                   "description": "海报图片地址",
                   "extra":{
                       "component_type":"input",
-                      "validation":[]
+                      "validation":[
+                        {
+                          "type":"required",
+                          "message":"必填"
+                        }]
                    }
                 },
                 "url": {
@@ -182,7 +195,11 @@
                   "description": "跳转地址",
                   "extra":{
                       "component_type":"input",
-                      "validation":[]
+                      "validation":[
+                        {
+                          "type":"required",
+                          "message":"必填"
+                        }]
                    }
                 },
                 "banner": {

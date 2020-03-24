@@ -3,19 +3,31 @@
     <!-- 第几层：{{ propDataCopy.level }} 排序：{{
       propDataCopy[`arrayIndex${propDataCopy.level}`]
     }} -->
-    <el-form ref="form" :model="form" label-width="130px">
-      <el-form-item :label="form.title">
-        <div class="inp_tooltip">
+    <el-form ref="form" :model="form" :rules="rules" label-width="150px">
+      <el-form-item :label="form.title" :prop="propDataCopy.key">
+        <span slot="label">
           <el-tooltip
             class="item"
             effect="dark"
             :content="propDataCopy.key || '无'"
-            placement="right"
+            placement="top"
           >
-            <el-button></el-button>
+            <el-button>{{ form.title }}</el-button>
           </el-tooltip>
-        </div>
-        <el-input v-model="form[propDataCopy.key]" @change="upData"></el-input>
+          <el-tooltip
+            class="item"
+            effect="dark"
+            :content="propDataCopy.description || '无'"
+            placement="top"
+          >
+            <i class="el-icon-question"></i>
+          </el-tooltip>
+        </span>
+        <el-input
+          v-model="form[propDataCopy.key]"
+          @change="upData"
+          v-bind="propDataCopy.extra.component_attrs"
+        ></el-input>
       </el-form-item>
     </el-form>
   </div>
@@ -34,7 +46,8 @@ export default {
   data() {
     return {
       propDataCopy: {},
-      form: {}
+      form: {},
+      rules: {}
     };
   },
   methods: {
@@ -58,9 +71,49 @@ export default {
     }
   },
   created() {
+    // 先拷贝一份
     this.propDataCopy = {
       ...this.propData
     };
+    // 定义规则
+    this.rules[this.propDataCopy.key] = this.propDataCopy.extra.validation.map(
+      item => {
+        if (item.type == "minLength") {
+          let a = {
+            ...item,
+            min: Number(item.param)
+          };
+          delete a.type;
+          return a;
+        }
+        if (item.type == "maxLength") {
+          let b = {
+            ...item,
+            max: Number(item.param)
+          };
+          delete b.type;
+          return b;
+        }
+        if (item.type == "pattern") {
+          let c = {
+            ...item,
+            pattern: item.param
+          };
+          delete c.type;
+          return c;
+        }
+        if (item.type == "required") {
+          let d = {
+            ...item,
+            required: true
+          };
+          delete d.type;
+          return d;
+        }
+        return item;
+      }
+    );
+    // console.log(this.rules);
     this.form = {
       [this.propDataCopy.key]: "",
       ...this.propDataCopy
@@ -70,17 +123,15 @@ export default {
 </script>
 <style lang="scss" scoped>
 .inp {
-  .inp_tooltip {
-    position: absolute;
-    left: -130px;
-    width: 130px;
-    top: 0px;
-    height: 100%;
-    .el-tooltip {
-      width: 130px;
-      height: 100%;
-      opacity: 0;
-    }
+  ::v-deep .el-button {
+    border: none !important;
+    padding: 0px !important;
+  }
+  ::v-deep .el-button:focus,
+  .el-button:hover {
+    color: #606266 !important;
+    border-color: none !important;
+    background-color: transparent !important;
   }
 }
 </style>

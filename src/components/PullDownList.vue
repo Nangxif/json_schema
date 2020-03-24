@@ -31,6 +31,7 @@
             arrayIndex1: index,
             level: schemaCopy.level
           }"
+          @deleteItem="deleteItem"
           @upData="upData"
         ></ArrayList>
       </div>
@@ -89,12 +90,27 @@ export default {
         "format"
       ],
       schemaData: [],
-      resultObject: {}
+      resultObject: {},
+      lastData: null
     };
   },
   methods: {
     upperFirst,
     handleChange() {},
+    // 最后一个获取到删除索引的方法
+    deleteItem(val) {
+      if (this.lastData) {
+        val
+          .reduce((total, item, index) => {
+            if (index < val.length - 1) {
+              return total[item];
+            }
+            return total;
+          }, this.lastData["main_key"])
+          .splice(val[val.length - 1]);
+        this.$emit("upData", { ...this.lastData });
+      }
+    },
     // 有时候upData是直接通过子数组的change传递上来的，没有经过处理
     removeOtherKey(data) {
       let dataCopy;
@@ -130,10 +146,15 @@ export default {
       delete this.resultObject.level;
       delete this.resultObject[`arrayIndex${val.level}`];
       if (this.schemaCopy.key) {
+        this.lastData = {
+          [this.schemaCopy.key]: { ...this.resultObject }
+        };
         this.$emit("upData", {
           [this.schemaCopy.key]: { ...this.resultObject }
         });
       } else {
+        // 最后上传的出口
+        this.lastData = { ...this.resultObject };
         this.$emit("upData", { ...this.resultObject });
       }
     }

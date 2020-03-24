@@ -9,6 +9,14 @@
       </div>
     </div>
     <div class="child_list" v-for="(item, index) in showArray" :key="index">
+      <el-button
+        round
+        size="middle"
+        @click="removeItem(index)"
+        class="removeButton_item"
+        v-if="index !== 0"
+        >删除</el-button
+      >
       <el-collapse v-model="activeNames" @change="handleChange">
         <el-collapse-item :title="ArrayListDataCopy.items.title" :name="index">
           <el-row>
@@ -51,6 +59,7 @@
                     isNested: true
                   }"
                   @upData="upData"
+                  @deleteItem="deleteItem"
                   v-else
                 ></ArrayList>
               </div>
@@ -89,6 +98,20 @@ export default {
       // 添加的时候要给最终生成的数组添加{}
       this.resultArray.push({});
     },
+    removeItem(index) {
+      this.showArray.splice(index, 1);
+      this.resultArray.slice(index, 1);
+      this.$emit("deleteItem", [].concat(this.ArrayListDataCopy.key, index));
+    },
+    deleteItem(val) {
+      this.$emit(
+        "deleteItem",
+        [
+          this.ArrayListDataCopy.key,
+          this.ArrayListDataCopy[`arrayIndex${this.ArrayListDataCopy.level}`]
+        ].concat(val)
+      );
+    },
     handleChange() {
       //   console.log(val);
     },
@@ -108,7 +131,7 @@ export default {
         ];
         delete this.resultArray[val[`arrayIndex${val.level}`]].isNested;
         delete this.resultArray[val[`arrayIndex${val.level}`]].level;
-        // 清除数组里面的arrayIndex，isNested和currentIndex
+        // 清除数组里面的arrayIndex，isNested和currentIndex，仅仅在这里清除子数组的参数还不太现实，因为有时候我们只触发了子数组的change
         Object.entries(this.resultArray[val[`arrayIndex${val.level}`]]).forEach(
           item => {
             // console.log(item);
@@ -128,9 +151,6 @@ export default {
             }
           }
         );
-        console.log({
-          [this.ArrayListDataCopy.key]: this.resultArray
-        });
         // 最后一层上传给对象的数组
         this.$emit("upData", {
           [this.ArrayListDataCopy.key]: this.resultArray
@@ -187,8 +207,14 @@ export default {
     }
   }
   .child_list {
+    position: relative;
     width: 98%;
     margin-left: 2%;
+    .removeButton_item {
+      position: absolute;
+      right: 40px;
+      top: 5px;
+    }
   }
   .indexButton {
     margin-top: 15px;
