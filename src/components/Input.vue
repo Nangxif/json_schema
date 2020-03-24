@@ -44,9 +44,7 @@ export default {
         "upData",
         this.propDataCopy[`arrayIndex${this.propDataCopy.level}`] == undefined
           ? {
-              [this.propDataCopy.key]: this.form[this.propDataCopy.key],
-              level: this.propDataCopy.level,
-              isNested: this.propDataCopy.isNested
+              [this.propDataCopy.key]: this.form[this.propDataCopy.key]
             }
           : {
               [this.propDataCopy.key]: this.form[this.propDataCopy.key],

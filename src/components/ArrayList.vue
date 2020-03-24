@@ -128,6 +128,10 @@ export default {
             }
           }
         );
+        console.log({
+          [this.ArrayListDataCopy.key]: this.resultArray
+        });
+        // 最后一层上传给对象的数组
         this.$emit("upData", {
           [this.ArrayListDataCopy.key]: this.resultArray
         });

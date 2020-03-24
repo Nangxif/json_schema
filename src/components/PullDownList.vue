@@ -13,7 +13,10 @@
         >
           <!-- 一般情况下的嵌套 -->
           <PullDownList
-            :schema="{ ...item.properties, level: schemaCopy.level + 1 }"
+            :schema="{
+              ...item.properties,
+              key: item.key
+            }"
             @upData="upData"
           ></PullDownList>
         </el-collapse-item>
@@ -36,7 +39,7 @@
       <div class="child_list" v-else>
         <component
           :is="upperFirst(item.extra && item.extra.component_type)"
-          :propData="{ ...item, arrayIndex1: index, level: schemaCopy.level }"
+          :propData="item"
           @upData="upData"
           v-if="item.extra"
         ></component>
@@ -92,14 +95,47 @@ export default {
   methods: {
     upperFirst,
     handleChange() {},
+    // 有时候upData是直接通过子数组的change传递上来的，没有经过处理
+    removeOtherKey(data) {
+      let dataCopy;
+      if (!Array.isArray(data)) {
+        dataCopy = { ...data };
+        Object.entries(dataCopy).forEach(item => {
+          if (Array.isArray(item[1])) {
+            item[1].forEach((i, idx) => {
+              delete dataCopy[item[0]][idx].level;
+              delete dataCopy[item[0]][idx].isNested;
+              dataCopy[item[0]][idx] = this.removeOtherKey(
+                dataCopy[item[0]][idx]
+              );
+            });
+          }
+        });
+      } else {
+        dataCopy = [...data];
+        dataCopy.forEach((i, idx) => {
+          delete dataCopy[idx].level;
+          delete dataCopy[idx].isNested;
+          dataCopy[idx] = this.removeOtherKey(dataCopy[idx]);
+        });
+      }
+      return dataCopy;
+    },
     upData(val) {
-      Object.entries(val).forEach(item => {
+      Object.entries(this.removeOtherKey(val)).forEach(item => {
         this.resultObject[item[0]] = item[1];
       });
       // 记得删除isNested，因为会从Input带上来
       delete this.resultObject.isNested;
       delete this.resultObject.level;
-      this.$emit("upData", this.resultObject);
+      delete this.resultObject[`arrayIndex${val.level}`];
+      if (this.schemaCopy.key) {
+        this.$emit("upData", {
+          [this.schemaCopy.key]: { ...this.resultObject }
+        });
+      } else {
+        this.$emit("upData", { ...this.resultObject });
+      }
     }
   },
   mounted() {
