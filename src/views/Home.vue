@@ -34,7 +34,7 @@
           </el-col>
         </el-row>
         <el-row>
-          <pre>{{ resultJSON }}</pre>
+          <pre class="pre_class">{{ resultJSON }}</pre>
         </el-row></el-main
       >
     </el-container>
@@ -76,8 +76,12 @@ export default {
       }
     },
     getResult() {
-      this.resultJSON = {};
-      Object.assign(this.resultJSON, this.result);
+      if (this.isShowJsonHtml) {
+        this.resultJSON = {};
+        Object.assign(this.resultJSON, this.result);
+      } else {
+        this.$message.error("请先生成模板");
+      }
     }
   },
   mounted() {
@@ -111,5 +115,11 @@ export default {
 .homeButton {
   display: block;
   margin: 15px auto;
+}
+.pre_class {
+  color: #303133;
+  font-size: 13px;
+  font-family: sans-serif;
+  font-weight: 600;
 }
 </style>
