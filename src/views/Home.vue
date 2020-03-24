@@ -104,6 +104,9 @@ export default {
   height: 800px;
   border: 1px solid #d9d9d9;
   border-radius: 4px;
+  color: #303133;
+  font-size: 13px;
+  font-family: sans-serif;
 }
 .pulldown {
   box-sizing: border-box;
