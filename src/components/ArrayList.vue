@@ -23,12 +23,22 @@
             <!-- 列表序号{{
             !ArrayListDataCopy.isNested ? index : ArrayListDataCopy.arrayIndex
           }} -->
-            <el-col :span="1" v-if="ArrayListDataCopy.additionalItems"
+            <el-col
+              :span="leftandright ? 1 : 2"
+              v-if="ArrayListDataCopy.additionalItems"
               ><el-button round size="small" class="indexButton">{{
                 index + 1
               }}</el-button></el-col
             >
-            <el-col :span="ArrayListDataCopy.additionalItems ? 23 : 24">
+            <el-col
+              :span="
+                ArrayListDataCopy.additionalItems
+                  ? leftandright
+                    ? 23
+                    : 22
+                  : 24
+              "
+            >
               <div v-for="(i, id) in item" :key="id">
                 <!-- 数组里面，如果是正常的输入框 -->
                 <!-- 要带上序号-->
@@ -72,6 +82,7 @@
 </template>
 <script>
 import { upperFirst } from "lodash";
+import { mapState } from "vuex";
 export default {
   name: "arraylist",
   props: {
@@ -81,6 +92,9 @@ export default {
         return {};
       }
     }
+  },
+  computed: {
+    ...mapState(["leftandright"])
   },
   data() {
     return {

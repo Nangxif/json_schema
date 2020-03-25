@@ -3,7 +3,7 @@
     <!-- 第几层：{{ propDataCopy.level }} 排序：{{
       propDataCopy[`arrayIndex${propDataCopy.level}`]
     }} -->
-    <el-form ref="form" :model="form" :rules="rules" label-width="150px">
+    <el-form ref="form" :model="form" :rules="rules" v-bind="setting">
       <el-form-item :label="form.title" :prop="propDataCopy.key">
         <span slot="label">
           <el-tooltip
@@ -26,13 +26,14 @@
         <el-input
           v-model="form[propDataCopy.key]"
           @change="upData"
-          v-bind="propDataCopy.extra.component_attrs"
+          v-bind="propDataCopy.extra.component_attrs || prepareAttrs"
         ></el-input>
       </el-form-item>
     </el-form>
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 export default {
   name: "inp",
   props: {
@@ -43,11 +44,46 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState(["leftandright", "canEdit"])
+  },
+  watch: {
+    leftandright(val) {
+      if (val) {
+        this.setting = {
+          "label-width": "150px"
+        };
+      } else {
+        this.setting = {};
+      }
+    },
+    canEdit(val) {
+      if (val) {
+        if (this.originAttrs) {
+          this.propDataCopy.extra.component_attrs = { ...this.originAttrs };
+        }
+        this.prepareAttrs = {};
+      } else {
+        if (this.originAttrs) {
+          this.propDataCopy.extra.component_attrs = {
+            ...this.propDataCopy.extra.component_attrs,
+            disabled: true
+          };
+        }
+        this.prepareAttrs = {
+          disabled: true
+        };
+      }
+    }
+  },
   data() {
     return {
       propDataCopy: {},
       form: {},
-      rules: {}
+      rules: {},
+      setting: null,
+      originAttrs: undefined,
+      prepareAttrs: {}
     };
   },
   methods: {
@@ -75,6 +111,25 @@ export default {
     this.propDataCopy = {
       ...this.propData
     };
+    this.setting = this.leftandright
+      ? {
+          "label-width": "150px"
+        }
+      : {};
+    if (this.propDataCopy.extra.component_attrs) {
+      this.originAttrs = { ...this.propDataCopy.extra.component_attrs };
+      if (!this.canEdit) {
+        this.propDataCopy.extra.component_attrs = {
+          ...this.propDataCopy.extra.component_attrs,
+          disabled: true
+        };
+      }
+    }
+    if (!this.canEdit) {
+      this.prepareAttrs = {
+        disabled: true
+      };
+    }
     // 定义规则
     this.rules[this.propDataCopy.key] = this.propDataCopy.extra.validation.map(
       item => {
@@ -109,6 +164,12 @@ export default {
           };
           delete d.type;
           return d;
+        }
+        if (item.type == "customValidate") {
+          let e = {
+            validator: item.param.compiled
+          };
+          return e;
         }
         return item;
       }

@@ -1,10 +1,26 @@
 <template>
   <div class="home">
     <el-container>
-      <el-header>
+      <el-header style="height:auto;">
         <div class="title">Json-schema</div>
         <div class="title_tip">
           请输入格式正确的json，点击“生成模板”，在模板上输入相应的数据，点击“生成JSON”，即可生成数据。
+        </div>
+        <div class="btn_group">
+          <el-switch
+            v-model="which"
+            active-text="左右排列"
+            inactive-text="上下排列"
+          >
+          </el-switch>
+
+          <el-switch
+            v-model="which2"
+            active-text="编辑"
+            inactive-text="只读"
+            style="margin-left:15px;"
+          >
+          </el-switch>
         </div>
       </el-header>
       <el-main
@@ -43,7 +59,9 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
 import PullDownList from "../components/PullDownList";
+import Ajv from "ajv";
 const dataJson = require("../files/data.json");
 export default {
   name: "Home",
@@ -52,13 +70,28 @@ export default {
       dataJson: {},
       JsonInputContent: JSON.stringify(dataJson),
       resultJSON: "还没生成过JSON",
-      isShowJsonHtml: false
+      isShowJsonHtml: false,
+      ajv: null,
+      which: true,
+      which2: true
     };
   },
   components: {
     PullDownList
   },
+  watch: {
+    which() {
+      this.leftandrightM();
+    },
+    which2() {
+      this.canEditM();
+    }
+  },
   methods: {
+    ...mapMutations(["leftandrightM", "canEditM"]),
+    ch() {
+      this.leftandrightM();
+    },
     copy() {
       const range = document.createRange();
       range.selectNode(document.getElementById("codeNum"));
@@ -74,6 +107,10 @@ export default {
     upData(val) {
       this.resultJSON = {};
       Object.assign(this.resultJSON, val);
+      // 校验
+      let validate = this.ajv.compile(this.dataJson);
+      let valid = validate(val);
+      if (!valid) console.log(validate.errors);
     },
     operateHTML() {
       try {
@@ -86,6 +123,7 @@ export default {
     }
   },
   mounted() {
+    this.ajv = new Ajv();
     // console.log(dataJson);
   }
 };
@@ -97,8 +135,16 @@ export default {
   color: black;
 }
 .title_tip {
-  margin-top: 5px;
+  margin: 5px auto;
   color: rgba(0, 0, 0, 0.65);
+}
+.btn_group {
+  box-sizing: border-box;
+  padding: 16px;
+  color: rgba(0, 0, 0, 0.65);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 .JsonInput {
   width: 100%;

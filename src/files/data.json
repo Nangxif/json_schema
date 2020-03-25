@@ -78,7 +78,7 @@
                     }
                 },
                 "short_config":{
-                  "title":"短链配置",
+                  "title":"短链配置aa",
                   "type":"object",
                   "properties":{
                       "short_url":{
