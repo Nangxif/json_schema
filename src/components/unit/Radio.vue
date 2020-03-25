@@ -1,42 +1,19 @@
 <template>
-  <div class="inp">
+  <div class="rad">
     <!-- 第几层：{{ propDataCopy.level }} 排序：{{
       propDataCopy[`arrayIndex${propDataCopy.level}`]
     }} -->
     <el-form ref="form" :model="form" :rules="rules" v-bind="setting">
       <el-form-item :label="form.title" :prop="propDataCopy.key">
-        <span slot="label">
-          <el-tooltip
-            class="item"
-            effect="dark"
-            :content="propDataCopy.key || '无'"
-            placement="top"
-          >
-            <el-button>{{ form.title }}</el-button>
-          </el-tooltip>
-          <el-tooltip
-            class="item"
-            effect="dark"
-            :content="propDataCopy.description || '无'"
-            placement="top"
-          >
-            <i class="el-icon-question"></i>
-          </el-tooltip>
-        </span>
-        <el-input
-          v-model="form[propDataCopy.key]"
-          @change="upData"
-          v-bind="propDataCopy.extra.component_attrs || prepareAttrs"
-        ></el-input>
+        <el-radio v-model="radio" label="1">备选项</el-radio>
       </el-form-item>
     </el-form>
   </div>
 </template>
 <script>
 import { mapState } from "vuex";
-// import Ajv from "ajv";
 export default {
-  name: "inp",
+  name: "rad",
   props: {
     propData: {
       type: Object,
@@ -49,7 +26,6 @@ export default {
     ...mapState(["leftandright", "canEdit"])
   },
   watch: {
-    // 实现左右上下排版的功能
     leftandright(val) {
       if (val) {
         this.setting = {
@@ -59,7 +35,6 @@ export default {
         this.setting = {};
       }
     },
-    // 是否屏蔽输入框
     canEdit(val) {
       if (val) {
         if (this.originAttrs) {
@@ -84,7 +59,6 @@ export default {
       propDataCopy: {},
       form: {},
       rules: {},
-      ajv: null,
       setting: null,
       originAttrs: undefined,
       prepareAttrs: {}
@@ -92,10 +66,6 @@ export default {
   },
   methods: {
     upData() {
-      // 校验
-      // let validate = this.ajv.compile(this.dataJson);
-      // let valid = validate(val);
-      // if (!valid) console.log(validate.errors);
       // 一旦修改了输入框的内容，要及时提交输入的信息，要区分有没有带数组的序号
       this.$emit(
         "upData",
@@ -124,7 +94,6 @@ export default {
           "label-width": "150px"
         }
       : {};
-    // 如果一开始传递进来的component_attrs不是undefined的话
     if (this.propDataCopy.extra.component_attrs) {
       this.originAttrs = { ...this.propDataCopy.extra.component_attrs };
       if (!this.canEdit) {
@@ -139,7 +108,6 @@ export default {
         disabled: true
       };
     }
-    // this.ajv = new Ajv();
     // 定义规则
     this.rules[this.propDataCopy.key] = this.propDataCopy.extra.validation.map(
       item => {
@@ -197,7 +165,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.inp {
+.rad {
   ::v-deep .el-button {
     border: none !important;
     padding: 0px !important;

@@ -139,10 +139,10 @@ export default {
       return dataCopy;
     },
     upData(val) {
+      // 记得删除isNested，因为会从Input带上来
       Object.entries(this.removeOtherKey(val)).forEach(item => {
         this.resultObject[item[0]] = item[1];
       });
-      // 记得删除isNested，因为会从Input带上来
       delete this.resultObject.isNested;
       delete this.resultObject.level;
       delete this.resultObject[`arrayIndex${val.level}`];

@@ -61,7 +61,7 @@
 <script>
 import { mapMutations } from "vuex";
 import PullDownList from "../components/PullDownList";
-import Ajv from "ajv";
+// import Ajv from "ajv";
 const dataJson = require("../files/data.json");
 export default {
   name: "Home",
@@ -89,9 +89,7 @@ export default {
   },
   methods: {
     ...mapMutations(["leftandrightM", "canEditM"]),
-    ch() {
-      this.leftandrightM();
-    },
+    // 复制功能
     copy() {
       const range = document.createRange();
       range.selectNode(document.getElementById("codeNum"));
@@ -104,13 +102,14 @@ export default {
         type: "success"
       });
     },
+    // 一旦有哪个数据更新了，就会触发这个方法
     upData(val) {
       this.resultJSON = {};
       Object.assign(this.resultJSON, val);
       // 校验
-      let validate = this.ajv.compile(this.dataJson);
-      let valid = validate(val);
-      if (!valid) console.log(validate.errors);
+      // let validate = this.ajv.compile(this.dataJson);
+      // let valid = validate(val);
+      // if (!valid) console.log(validate.errors);
     },
     operateHTML() {
       try {
@@ -123,7 +122,7 @@ export default {
     }
   },
   mounted() {
-    this.ajv = new Ajv();
+    // this.ajv = new Ajv();
     // console.log(dataJson);
   }
 };
@@ -188,7 +187,7 @@ export default {
     /*滚动条里面小方块*/
     border-radius: 5px;
     -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-    background: white;
+    background: rgb(184, 182, 182);
   }
   &::-webkit-scrollbar-track {
     /*滚动条里面轨道*/

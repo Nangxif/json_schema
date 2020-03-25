@@ -163,9 +163,13 @@
                               "type": "string",
                               "description": "",
                               "title":"下标",
+                              
                               "extra":{
                                   "component_type":"input",
-                                  "validation":[]
+                                  "validation":[],
+                                  "message":{
+                                    "maxLength":"提示语"
+                                  }
                                 }
                             },
                             "image": {
