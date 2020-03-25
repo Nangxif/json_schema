@@ -118,6 +118,10 @@ export default {
       [this.propDataCopy.key]: "",
       ...this.propDataCopy
     };
+  },
+  mounted() {
+    // 创建完成之后要先把自己的JSON空数据格式全部先上传到父级
+    this.upData();
   }
 };
 </script>

@@ -108,7 +108,7 @@ export default {
             return total;
           }, this.lastData["main_key"])
           .splice(val[val.length - 1]);
-        this.$emit("upData", { ...this.lastData });
+        this.$emit("upData", { ...this.lastData.main_key });
       }
     },
     // 有时候upData是直接通过子数组的change传递上来的，没有经过处理
@@ -128,6 +128,7 @@ export default {
           }
         });
       } else {
+        // 第一次递归会到这里
         dataCopy = [...data];
         dataCopy.forEach((i, idx) => {
           delete dataCopy[idx].level;
@@ -155,7 +156,7 @@ export default {
       } else {
         // 最后上传的出口
         this.lastData = { ...this.resultObject };
-        this.$emit("upData", { ...this.resultObject });
+        this.$emit("upData", { ...this.resultObject.main_key });
       }
     }
   },

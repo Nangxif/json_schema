@@ -25,16 +25,17 @@
                     v-if="isShowJsonHtml"
                   ></PullDownList>
                 </div>
-
-                <el-button round @click="getResult" class="homeButton"
-                  >生成JSON</el-button
-                >
               </el-col>
             </el-row>
           </el-col>
         </el-row>
         <el-row>
-          <pre class="pre_class">{{ resultJSON }}</pre>
+          <div class="pre_class">
+            <div class="copy" @click="copy">
+              复制<i class="el-icon-document-copy"></i>
+            </div>
+            <pre id="codeNum">{{ resultJSON }}</pre>
+          </div>
         </el-row></el-main
       >
     </el-container>
@@ -50,7 +51,6 @@ export default {
     return {
       dataJson: {},
       JsonInputContent: JSON.stringify(dataJson),
-      result: {},
       resultJSON: "还没生成过JSON",
       isShowJsonHtml: false
     };
@@ -59,28 +59,29 @@ export default {
     PullDownList
   },
   methods: {
+    copy() {
+      const range = document.createRange();
+      range.selectNode(document.getElementById("codeNum"));
+      const selection = window.getSelection();
+      if (selection.rangeCount > 0) selection.removeAllRanges();
+      selection.addRange(range);
+      document.execCommand("copy");
+      this.$message({
+        message: "复制成功",
+        type: "success"
+      });
+    },
     upData(val) {
-      if (this.resultJSON != "还没生成过JSON") {
-        this.resultJSON = "表单已被修改过，请重新点击生成";
-      }
-      this.result = val;
+      this.resultJSON = {};
+      Object.assign(this.resultJSON, val);
     },
     operateHTML() {
-      // console.log(JSON.parse(this.JsonInputContent));
       try {
         this.dataJson = JSON.parse(this.JsonInputContent);
         this.isShowJsonHtml = false;
         this.isShowJsonHtml = true;
       } catch (e) {
         this.$message.error("输入的JSON格式有误");
-      }
-    },
-    getResult() {
-      if (this.isShowJsonHtml) {
-        this.resultJSON = {};
-        Object.assign(this.resultJSON, this.result);
-      } else {
-        this.$message.error("请先生成模板");
       }
     }
   },
@@ -104,9 +105,27 @@ export default {
   height: 800px;
   border: 1px solid #d9d9d9;
   border-radius: 4px;
-  color: #303133;
-  font-size: 13px;
-  font-family: sans-serif;
+  color: #9cdcfe;
+  font-size: 18px;
+  font-family: Consolas, "Courier New", monospace;
+  background-color: #011627;
+  &::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 4px; /*高宽分别对应横竖滚动条的尺寸*/
+    height: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background: #111111;
+  }
+  &::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: 0;
+    background: rgba(0, 0, 0, 0.1);
+  }
 }
 .pulldown {
   box-sizing: border-box;
@@ -114,15 +133,63 @@ export default {
   width: 100%;
   height: 800px;
   overflow-y: auto;
+  &::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 4px; /*高宽分别对应横竖滚动条的尺寸*/
+    height: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background: white;
+  }
+  &::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: 0;
+    background: rgba(0, 0, 0, 0.1);
+  }
 }
 .homeButton {
   display: block;
   margin: 15px auto;
 }
 .pre_class {
-  color: #303133;
-  font-size: 13px;
-  font-family: sans-serif;
-  font-weight: 600;
+  position: relative;
+  box-sizing: border-box;
+  height: 500px;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 18px;
+  font-family: Consolas, "Courier New", monospace;
+  background-color: #011627;
+  color: #9cdcfe;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 4px; /*高宽分别对应横竖滚动条的尺寸*/
+    height: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background: #111111;
+  }
+  &::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: 0;
+    background: rgba(0, 0, 0, 0.1);
+  }
+  .copy {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+    color: white;
+  }
 }
 </style>
