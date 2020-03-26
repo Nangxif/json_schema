@@ -3,9 +3,35 @@
     <!-- 第几层：{{ propDataCopy.level }} 排序：{{
       propDataCopy[`arrayIndex${propDataCopy.level}`]
     }} -->
-    <el-form ref="form" :model="form" :rules="rules" v-bind="setting">
+    <el-form ref="form" :model="form" v-bind="setting">
       <el-form-item :label="form.title" :prop="propDataCopy.key">
-        <el-radio v-model="radio" label="1">备选项</el-radio>
+        <span slot="label">
+          <el-tooltip
+            class="item"
+            effect="dark"
+            :content="propDataCopy.key || '无'"
+            placement="top"
+          >
+            <el-button>{{ form.title }}</el-button>
+          </el-tooltip>
+          <el-tooltip
+            class="item"
+            effect="dark"
+            :content="propDataCopy.description || '无'"
+            placement="top"
+          >
+            <i class="el-icon-question"></i>
+          </el-tooltip>
+        </span>
+        <el-radio
+          v-model="finalRadio"
+          :label="item.key"
+          v-for="(item, index) in radioArr"
+          :key="index"
+          @change="upData"
+          v-bind="propDataCopy.extra.component_attrs || prepareAttrs"
+          >{{ item.value }}</el-radio
+        >
       </el-form-item>
     </el-form>
   </div>
@@ -58,10 +84,11 @@ export default {
     return {
       propDataCopy: {},
       form: {},
-      rules: {},
       setting: null,
       originAttrs: undefined,
-      prepareAttrs: {}
+      prepareAttrs: {},
+      finalRadio: "",
+      radioArr: []
     };
   },
   methods: {
@@ -71,10 +98,10 @@ export default {
         "upData",
         this.propDataCopy[`arrayIndex${this.propDataCopy.level}`] == undefined
           ? {
-              [this.propDataCopy.key]: this.form[this.propDataCopy.key]
+              [this.propDataCopy.key]: this.finalRadio
             }
           : {
-              [this.propDataCopy.key]: this.form[this.propDataCopy.key],
+              [this.propDataCopy.key]: this.finalRadio,
               [`arrayIndex${this.propDataCopy.level}`]: this.propDataCopy[
                 `arrayIndex${this.propDataCopy.level}`
               ],
@@ -89,6 +116,18 @@ export default {
     this.propDataCopy = {
       ...this.propData
     };
+    if (this.propDataCopy.enum.length != this.propDataCopy.enumNames.length) {
+      this.$message.error("Radio的enum和enumNames数量不匹配");
+    } else {
+      this.propDataCopy.enum.forEach((item, index) => {
+        this.radioArr.push({
+          key: item,
+          value: this.propDataCopy.enumNames[index]
+        });
+      });
+    }
+
+    // 配置项处理
     this.setting = this.leftandright
       ? {
           "label-width": "150px"
@@ -108,51 +147,7 @@ export default {
         disabled: true
       };
     }
-    // 定义规则
-    this.rules[this.propDataCopy.key] = this.propDataCopy.extra.validation.map(
-      item => {
-        if (item.type == "minLength") {
-          let a = {
-            ...item,
-            min: Number(item.param)
-          };
-          delete a.type;
-          return a;
-        }
-        if (item.type == "maxLength") {
-          let b = {
-            ...item,
-            max: Number(item.param)
-          };
-          delete b.type;
-          return b;
-        }
-        if (item.type == "pattern") {
-          let c = {
-            ...item,
-            pattern: item.param
-          };
-          delete c.type;
-          return c;
-        }
-        if (item.type == "required") {
-          let d = {
-            ...item,
-            required: true
-          };
-          delete d.type;
-          return d;
-        }
-        if (item.type == "customValidate") {
-          let e = {
-            validator: item.param.compiled
-          };
-          return e;
-        }
-        return item;
-      }
-    );
-    // console.log(this.rules);
+
     this.form = {
       [this.propDataCopy.key]: "",
       ...this.propDataCopy
