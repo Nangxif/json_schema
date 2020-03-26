@@ -34,6 +34,7 @@
 </template>
 <script>
 import { mapState } from "vuex";
+import validationFilter from "../../util/validation";
 // import Ajv from "ajv";
 export default {
   name: "inp",
@@ -141,48 +142,8 @@ export default {
     }
     // this.ajv = new Ajv();
     // 定义规则
-    this.rules[this.propDataCopy.key] = this.propDataCopy.extra.validation.map(
-      item => {
-        if (item.type == "minLength") {
-          let a = {
-            ...item,
-            min: Number(item.param)
-          };
-          delete a.type;
-          return a;
-        }
-        if (item.type == "maxLength") {
-          let b = {
-            ...item,
-            max: Number(item.param)
-          };
-          delete b.type;
-          return b;
-        }
-        if (item.type == "pattern") {
-          let c = {
-            ...item,
-            pattern: item.param
-          };
-          delete c.type;
-          return c;
-        }
-        if (item.type == "required") {
-          let d = {
-            ...item,
-            required: true
-          };
-          delete d.type;
-          return d;
-        }
-        if (item.type == "customValidate") {
-          let e = {
-            validator: item.param.compiled
-          };
-          return e;
-        }
-        return item;
-      }
+    this.rules[this.propDataCopy.key] = validationFilter(
+      this.propDataCopy.extra.validation
     );
     // console.log(this.rules);
     this.form = {

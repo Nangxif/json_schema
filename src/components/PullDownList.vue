@@ -23,7 +23,7 @@
       </el-collapse>
 
       <!-- 如果是数组类型的话 -->
-      <div class="child_list" v-else-if="item.items">
+      <div class="child_list" v-else-if="item.items && !item.enum">
         <!-- 如果是array类型可拓展的话 -->
         <ArrayList
           :ArrayListData="{

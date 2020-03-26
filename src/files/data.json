@@ -33,6 +33,32 @@
                       ]
                     }
                 },
+                "short_url_num":{
+                  "title":"短链数量",
+                  "type":"number",
+                  "description":"短链数量的描述",
+                  "extra":{
+                    "component_type":"input",
+                    "component_attrs": {
+                      "type": "number"
+                    },
+                    "component_props":{
+                      "behavior":"NORMAL"
+                    },
+                    "validation":[
+                      {
+                        "type":"minimum",
+                        "message": "值不能小于10",
+                        "param":"10"
+                      },
+                      {
+                        "type":"maximum",
+                        "message": "值不能大于50",
+                        "param":"50"
+                      }
+                    ]
+                  }
+              },
                 "app_share_short_url":{
                     "title":"app分享短链配置",
                     "type":"string",
@@ -41,6 +67,28 @@
                       "component_type":"input",
                       "validation":[]
                     }
+                },
+                "app_share_url":{
+                  "title":"app分享配置",
+                  "type":"string",
+                  "description":"app分享配置的描述",
+                  "enum":["beijing"],
+                  "enumNames":["北京"],
+                  "extra":{
+                    "component_type":"radio",
+                    "validation":[]
+                  }
+                },
+                "app_share_urls":{
+                  "title":"app分享配置",
+                  "type":"array",
+                  "description":"app分享配置的描述",
+                  "enum":["beijing"],
+                  "enumNames":["北京"],
+                  "extra":{
+                    "component_type":"radio",
+                    "validation":[]
+                  }
                 },
                 "wx_share_short_url":{
                     "title":"wx分享短链配置",
