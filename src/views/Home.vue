@@ -208,7 +208,6 @@ export default {
   height: 500px;
   border: 1px solid #d9d9d9;
   border-radius: 8px;
-  padding: 10px;
   font-size: 18px;
   font-family: Consolas, "Courier New", monospace;
   background-color: #011627;
@@ -220,6 +219,7 @@ export default {
     top: 10px;
     cursor: pointer;
     color: white;
+    z-index: 1;
   }
   .pre_content {
     position: absolute;
@@ -227,6 +227,7 @@ export default {
     top: 0px;
     height: 500px;
     width: 100%;
+    padding: 10px;
     overflow-y: auto;
     &::-webkit-scrollbar {
       /*滚动条整体样式*/
