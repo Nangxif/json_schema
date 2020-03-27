@@ -77,7 +77,45 @@
                     "component_type":"TimePicker",
                     "validation":[]
                   }
-              },
+                },
+                "app_select":{
+                  "title":"app选择下拉",
+                  "type":"array",
+                  "description":"app选择下拉的描述",
+                  "enum":["beijing","guangzhou","fujian"],
+                  "enumNames":["北京","广州","福建"],
+                  "extra":{
+                    "component_type":"select",
+                    "validation":[]
+                  }
+                },
+                "app_selects":{
+                  "title":"app选择下拉2",
+                  "type":"array",
+                  "description":"app选择下拉2的描述",
+                  "enum":["beijing","guangzhou","fujian"],
+                  "enumNames":["北京","广州","福建"],
+                  "extra":{
+                    "component_type":"select",
+                    "component_attrs": {
+                      "multiple": true
+                    },
+                    "validation":[]
+                  }
+                },
+                "app_number":{
+                  "title":"app分享配置个数",
+                  "type":"number",
+                  "description":"app分享配置个数的描述",
+                  "extra":{
+                    "component_type":"inputNumber",
+                    "component_attrs": {
+                      "min": 0,
+                      "max":2
+                    },
+                    "validation":[]
+                  }
+                },
                 "app_share_url":{
                   "title":"app分享配置",
                   "type":"string",

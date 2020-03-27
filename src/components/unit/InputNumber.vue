@@ -1,8 +1,5 @@
 <template>
-  <div class="check">
-    <!-- 第几层：{{ propDataCopy.level }} 排序：{{
-      propDataCopy[`arrayIndex${propDataCopy.level}`]
-    }} -->
+  <div class="inputnumber">
     <el-form ref="form" :model="form" v-bind="setting">
       <el-form-item :label="form.title" :prop="propDataCopy.key">
         <span slot="label">
@@ -23,15 +20,11 @@
             <i class="el-icon-question"></i>
           </el-tooltip>
         </span>
-        <el-checkbox-group v-model="finalCheckbox" @change="upData">
-          <el-checkbox
-            :label="item.key"
-            v-for="(item, index) in checkboxArr"
-            :key="index"
-            v-bind="propDataCopy.extra.component_attrs || prepareAttrs"
-            >{{ item.value }}</el-checkbox
-          >
-        </el-checkbox-group>
+        <el-input-number
+          v-model="num"
+          v-bind="propDataCopy.extra.component_attrs || prepareAttrs"
+          @change="upData"
+        ></el-input-number>
       </el-form-item>
     </el-form>
   </div>
@@ -39,7 +32,7 @@
 <script>
 import { mapState } from "vuex";
 export default {
-  name: "check",
+  name: "inputnumber",
   props: {
     propData: {
       type: Object,
@@ -87,22 +80,20 @@ export default {
       setting: null,
       originAttrs: undefined,
       prepareAttrs: {},
-      finalCheckbox: [],
-      checkboxArr: []
+      num: 0
     };
   },
   methods: {
     upData() {
-      let obj = this.finalCheckbox.slice();
       // 一旦修改了输入框的内容，要及时提交输入的信息，要区分有没有带数组的序号
       this.$emit(
         "upData",
         this.propDataCopy[`arrayIndex${this.propDataCopy.level}`] == undefined
           ? {
-              [this.propDataCopy.key]: obj
+              [this.propDataCopy.key]: this.num
             }
           : {
-              [this.propDataCopy.key]: obj,
+              [this.propDataCopy.key]: this.num,
               [`arrayIndex${this.propDataCopy.level}`]: this.propDataCopy[
                 `arrayIndex${this.propDataCopy.level}`
               ],
@@ -117,16 +108,6 @@ export default {
     this.propDataCopy = {
       ...this.propData
     };
-    if (this.propDataCopy.enum.length != this.propDataCopy.enumNames.length) {
-      this.$message.error("Checkbox的enum和enumNames数量不匹配");
-    } else {
-      this.propDataCopy.enum.forEach((item, index) => {
-        this.checkboxArr = this.checkboxArr.concat({
-          key: item,
-          value: this.propDataCopy.enumNames[index]
-        });
-      });
-    }
 
     // 配置项处理
     this.setting = this.leftandright
@@ -161,7 +142,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.check {
+.inputnumber {
   ::v-deep .el-button {
     border: none !important;
     padding: 0px !important;

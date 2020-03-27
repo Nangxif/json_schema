@@ -1,5 +1,5 @@
 <template>
-  <div class="check">
+  <div class="sel">
     <!-- 第几层：{{ propDataCopy.level }} 排序：{{
       propDataCopy[`arrayIndex${propDataCopy.level}`]
     }} -->
@@ -23,15 +23,21 @@
             <i class="el-icon-question"></i>
           </el-tooltip>
         </span>
-        <el-checkbox-group v-model="finalCheckbox" @change="upData">
-          <el-checkbox
-            :label="item.key"
-            v-for="(item, index) in checkboxArr"
+
+        <el-select
+          v-model="finalSelect"
+          placeholder="请选择"
+          v-bind="propDataCopy.extra.component_attrs || prepareAttrs"
+          @change="upData"
+        >
+          <el-option
+            v-for="(item, index) in selectArr"
             :key="index"
-            v-bind="propDataCopy.extra.component_attrs || prepareAttrs"
-            >{{ item.value }}</el-checkbox
+            :label="item.value"
+            :value="item.key"
           >
-        </el-checkbox-group>
+          </el-option>
+        </el-select>
       </el-form-item>
     </el-form>
   </div>
@@ -39,7 +45,7 @@
 <script>
 import { mapState } from "vuex";
 export default {
-  name: "check",
+  name: "sel",
   props: {
     propData: {
       type: Object,
@@ -87,13 +93,22 @@ export default {
       setting: null,
       originAttrs: undefined,
       prepareAttrs: {},
-      finalCheckbox: [],
-      checkboxArr: []
+      finalSelect: [],
+      selectArr: []
     };
   },
   methods: {
     upData() {
-      let obj = this.finalCheckbox.slice();
+      let obj;
+      if (typeof this.finalSelect == "string") {
+        if (this.finalSelect.length == 0) {
+          obj = [];
+        } else {
+          obj = [this.finalSelect];
+        }
+      } else {
+        obj = this.finalSelect.slice();
+      }
       // 一旦修改了输入框的内容，要及时提交输入的信息，要区分有没有带数组的序号
       this.$emit(
         "upData",
@@ -121,7 +136,7 @@ export default {
       this.$message.error("Checkbox的enum和enumNames数量不匹配");
     } else {
       this.propDataCopy.enum.forEach((item, index) => {
-        this.checkboxArr = this.checkboxArr.concat({
+        this.selectArr = this.selectArr.concat({
           key: item,
           value: this.propDataCopy.enumNames[index]
         });
@@ -161,7 +176,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.check {
+.sel {
   ::v-deep .el-button {
     border: none !important;
     padding: 0px !important;
