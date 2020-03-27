@@ -78,6 +78,15 @@
                     "validation":[]
                   }
                 },
+                "app_date":{
+                  "title":"app分享日期",
+                  "type":"string",
+                  "description":"app分享日期的描述",
+                  "extra":{
+                    "component_type":"DatePicker",
+                    "validation":[]
+                  }
+                },
                 "app_select":{
                   "title":"app选择下拉",
                   "type":"array",

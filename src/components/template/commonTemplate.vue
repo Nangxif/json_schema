@@ -1,9 +1,6 @@
 <template>
-  <div class="inp">
-    <!-- 第几层：{{ propDataCopy.level }} 排序：{{
-      propDataCopy[`arrayIndex${propDataCopy.level}`]
-    }} -->
-    <el-form ref="form" :model="form" :rules="rules" v-bind="setting">
+  <div class="common">
+    <el-form ref="form" :model="form" v-bind="setting">
       <el-form-item :label="form.title" :prop="propDataCopy.key">
         <span slot="label">
           <el-tooltip
@@ -23,22 +20,26 @@
             <i class="el-icon-question"></i>
           </el-tooltip>
         </span>
-        <el-input
-          v-model="form[propDataCopy.key]"
-          @change="upData"
-          v-bind="propDataCopy.extra.component_attrs || prepareAttrs"
-        ></el-input>
+        <slot
+          :attr="propDataCopy.extra.component_attrs || prepareAttrs"
+          :change="upData"
+        ></slot>
       </el-form-item>
     </el-form>
   </div>
 </template>
 <script>
 import { mapState } from "vuex";
-import validationFilter from "../../util/validation";
 export default {
-  name: "inp",
+  name: "common",
   props: {
     propData: {
+      type: Object,
+      default() {
+        return {};
+      }
+    },
+    defaultVal: {
       type: Object,
       default() {
         return {};
@@ -49,7 +50,6 @@ export default {
     ...mapState(["leftandright", "canEdit"])
   },
   watch: {
-    // 实现左右上下排版的功能
     leftandright(val) {
       if (val) {
         this.setting = {
@@ -59,7 +59,6 @@ export default {
         this.setting = {};
       }
     },
-    // 是否屏蔽输入框
     canEdit(val) {
       if (val) {
         if (this.originAttrs) {
@@ -83,23 +82,24 @@ export default {
     return {
       propDataCopy: {},
       form: {},
-      rules: {},
       setting: null,
       originAttrs: undefined,
       prepareAttrs: {}
     };
   },
   methods: {
-    upData() {
+    upData(data) {
+      let upd = data || this.defaultVal.value;
+      console.log(upd);
       // 一旦修改了输入框的内容，要及时提交输入的信息，要区分有没有带数组的序号
       this.$emit(
         "upData",
         this.propDataCopy[`arrayIndex${this.propDataCopy.level}`] == undefined
           ? {
-              [this.propDataCopy.key]: this.form[this.propDataCopy.key]
+              [this.propDataCopy.key]: upd
             }
           : {
-              [this.propDataCopy.key]: this.form[this.propDataCopy.key],
+              [this.propDataCopy.key]: upd,
               [`arrayIndex${this.propDataCopy.level}`]: this.propDataCopy[
                 `arrayIndex${this.propDataCopy.level}`
               ],
@@ -114,12 +114,13 @@ export default {
     this.propDataCopy = {
       ...this.propData
     };
+
+    // 配置项处理
     this.setting = this.leftandright
       ? {
           "label-width": "150px"
         }
       : {};
-    // 如果一开始传递进来的component_attrs不是undefined的话
     if (this.propDataCopy.extra.component_attrs) {
       this.originAttrs = { ...this.propDataCopy.extra.component_attrs };
       if (!this.canEdit) {
@@ -134,10 +135,7 @@ export default {
         disabled: true
       };
     }
-    // 定义规则
-    this.rules[this.propDataCopy.key] = validationFilter(
-      this.propDataCopy.extra.validation
-    );
+
     this.form = {
       [this.propDataCopy.key]: "",
       ...this.propDataCopy
@@ -150,7 +148,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.inp {
+.common {
   ::v-deep .el-button {
     border: none !important;
     padding: 0px !important;
