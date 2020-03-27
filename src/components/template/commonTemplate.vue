@@ -1,6 +1,6 @@
 <template>
   <div class="common">
-    <el-form ref="form" :model="form" v-bind="setting">
+    <el-form ref="form" :model="form" :rules="rules" v-bind="setting">
       <el-form-item :label="form.title" :prop="propDataCopy.key">
         <span slot="label">
           <el-tooltip
@@ -30,15 +30,18 @@
 </template>
 <script>
 import { mapState } from "vuex";
+import validationFilter from "../../util/validation";
 export default {
   name: "common",
   props: {
+    // 通过每个组件传递进来的json数据
     propData: {
       type: Object,
       default() {
         return {};
       }
     },
+    // 每个组件通过公共组件传递的初始值
     defaultVal: {
       type: Object,
       default() {
@@ -50,6 +53,7 @@ export default {
     ...mapState(["leftandright", "canEdit"])
   },
   watch: {
+    //   控制左右显示还是上下显示
     leftandright(val) {
       if (val) {
         this.setting = {
@@ -59,6 +63,7 @@ export default {
         this.setting = {};
       }
     },
+    // 控制是否屏蔽输入框等组件
     canEdit(val) {
       if (val) {
         if (this.originAttrs) {
@@ -82,6 +87,7 @@ export default {
     return {
       propDataCopy: {},
       form: {},
+      rules: {},
       setting: null,
       originAttrs: undefined,
       prepareAttrs: {}
@@ -90,7 +96,6 @@ export default {
   methods: {
     upData(data) {
       let upd = data || this.defaultVal.value;
-      console.log(upd);
       // 一旦修改了输入框的内容，要及时提交输入的信息，要区分有没有带数组的序号
       this.$emit(
         "upData",
@@ -135,7 +140,10 @@ export default {
         disabled: true
       };
     }
-
+    // 定义规则
+    this.rules[this.propDataCopy.key] = validationFilter(
+      this.propDataCopy.extra.validation
+    );
     this.form = {
       [this.propDataCopy.key]: "",
       ...this.propDataCopy
