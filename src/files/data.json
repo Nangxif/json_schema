@@ -68,12 +68,22 @@
                       "validation":[]
                     }
                 },
+                
+                "app_time":{
+                  "title":"app分享时间",
+                  "type":"string",
+                  "description":"app分享时间的描述",
+                  "extra":{
+                    "component_type":"TimePicker",
+                    "validation":[]
+                  }
+              },
                 "app_share_url":{
                   "title":"app分享配置",
                   "type":"string",
                   "description":"app分享配置的描述",
-                  "enum":["beijing"],
-                  "enumNames":["北京"],
+                  "enum":["beijing","guangzhou"],
+                  "enumNames":["北京","广州"],
                   "extra":{
                     "component_type":"radio",
                     "validation":[]
@@ -83,10 +93,10 @@
                   "title":"app分享配置",
                   "type":"array",
                   "description":"app分享配置的描述",
-                  "enum":["beijing"],
-                  "enumNames":["北京"],
+                  "enum":["beijing","guangzhou"],
+                  "enumNames":["北京","广州"],
                   "extra":{
-                    "component_type":"radio",
+                    "component_type":"checkbox",
                     "validation":[]
                   }
                 },

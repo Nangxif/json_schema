@@ -115,7 +115,7 @@ export default {
     removeOtherKey(data) {
       let dataCopy;
       if (!Array.isArray(data)) {
-        dataCopy = { ...data };
+        dataCopy = JSON.parse(JSON.stringify(data));
         Object.entries(dataCopy).forEach(item => {
           if (Array.isArray(item[1])) {
             item[1].forEach((i, idx) => {
@@ -129,7 +129,7 @@ export default {
         });
       } else {
         // 第一次递归会到这里
-        dataCopy = [...data];
+        dataCopy = JSON.parse(JSON.stringify(data));
         dataCopy.forEach((i, idx) => {
           delete dataCopy[idx].level;
           delete dataCopy[idx].isNested;
@@ -140,7 +140,8 @@ export default {
     },
     upData(val) {
       // 记得删除isNested，因为会从Input带上来
-      Object.entries(this.removeOtherKey(val)).forEach(item => {
+      let transformVal = JSON.parse(JSON.stringify(val));
+      Object.entries(this.removeOtherKey(transformVal)).forEach(item => {
         this.resultObject[item[0]] = item[1];
       });
       delete this.resultObject.isNested;

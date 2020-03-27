@@ -50,7 +50,9 @@
             <div class="copy" @click="copy">
               复制<i class="el-icon-document-copy"></i>
             </div>
-            <pre id="codeNum">{{ resultJSON }}</pre>
+            <div class="pre_content">
+              <pre id="codeNum">{{ resultJSON }}</pre>
+            </div>
           </div>
         </el-row></el-main
       >
@@ -211,30 +213,38 @@ export default {
   font-family: Consolas, "Courier New", monospace;
   background-color: #011627;
   color: #9cdcfe;
-  overflow-y: auto;
-  &::-webkit-scrollbar {
-    /*滚动条整体样式*/
-    width: 4px; /*高宽分别对应横竖滚动条的尺寸*/
-    height: 4px;
-  }
-  &::-webkit-scrollbar-thumb {
-    /*滚动条里面小方块*/
-    border-radius: 5px;
-    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-    background: #111111;
-  }
-  &::-webkit-scrollbar-track {
-    /*滚动条里面轨道*/
-    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-    border-radius: 0;
-    background: rgba(0, 0, 0, 0.1);
-  }
+
   .copy {
     position: absolute;
     right: 10px;
     top: 10px;
     cursor: pointer;
     color: white;
+  }
+  .pre_content {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    height: 500px;
+    width: 100%;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      /*滚动条整体样式*/
+      width: 4px; /*高宽分别对应横竖滚动条的尺寸*/
+      height: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+      /*滚动条里面小方块*/
+      border-radius: 5px;
+      -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+      background: #111111;
+    }
+    &::-webkit-scrollbar-track {
+      /*滚动条里面轨道*/
+      -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+      border-radius: 0;
+      background: rgba(0, 0, 0, 0.1);
+    }
   }
 }
 </style>
