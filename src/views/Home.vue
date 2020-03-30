@@ -205,6 +205,7 @@ export default {
 .pre_class {
   position: relative;
   box-sizing: border-box;
+  width: 100%;
   height: 500px;
   border: 1px solid #d9d9d9;
   border-radius: 8px;
@@ -222,11 +223,12 @@ export default {
     z-index: 1;
   }
   .pre_content {
+    box-sizing: border-box;
     position: absolute;
     left: 0px;
+    right: 0px;
     top: 0px;
     height: 500px;
-    width: 100%;
     padding: 10px;
     overflow-y: auto;
     &::-webkit-scrollbar {
@@ -238,7 +240,7 @@ export default {
       /*滚动条里面小方块*/
       border-radius: 5px;
       -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-      background: #111111;
+      background: rgb(156, 155, 155);
     }
     &::-webkit-scrollbar-track {
       /*滚动条里面轨道*/

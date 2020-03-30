@@ -58,10 +58,13 @@ export default {
     leftandright(val) {
       if (val) {
         this.setting = {
-          "label-width": "150px"
+          "label-width": "150px",
+          inline: true
         };
       } else {
-        this.setting = {};
+        this.setting = {
+          "label-position": "top"
+        };
       }
     },
     // 控制是否屏蔽输入框等组件
@@ -124,9 +127,12 @@ export default {
     // 配置项处理
     this.setting = this.leftandright
       ? {
-          "label-width": "150px"
+          "label-width": "150px",
+          inline: true
         }
-      : {};
+      : {
+          "label-position": "top"
+        };
     if (this.propDataCopy.extra.component_attrs) {
       this.originAttrs = { ...this.propDataCopy.extra.component_attrs };
       if (!this.canEdit) {
