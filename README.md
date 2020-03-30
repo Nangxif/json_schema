@@ -6,6 +6,20 @@
 >>template  共有组件  
 >>unit 所有组件，目前有Checkbox、DatePicker、Input、InputNumber、Radio、Select、TimePicker
 
+## 使用方法
+
+```
+import PullDownList form 'PullDownList';
+
+<PullDownList
+  :schema="dataJson"
+  @upData="upData"
+></PullDownList>
+
+// :schema: 传入的json数据入口
+// @upData: 生成的json数据出口
+```
+
 ## FAQ 
 ### 怎么自己创建新的表单组件？
 

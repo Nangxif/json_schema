@@ -63,7 +63,6 @@
 <script>
 import { mapMutations } from "vuex";
 import PullDownList from "../components/PullDownList";
-// import Ajv from "ajv";
 const dataJson = require("../files/data.json");
 export default {
   name: "Home",
