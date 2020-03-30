@@ -3,7 +3,7 @@
 ## 目录
 
 >components
->>template  共有组件
+>>template  共有组件  
 >>unit 所有组件，目前有Checkbox、DatePicker、Input、InputNumber、Radio、Select、TimePicker
 
 ## FAQ 
