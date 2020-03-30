@@ -5,13 +5,13 @@
       :defaultVal="{ value: finalRadio }"
       @upData="upData"
     >
-      <template v-slot="{ attr, change }">
+      <template v-slot="{ attr, change, form }">
         <el-radio
-          v-model="finalRadio"
+          v-model="form[propDataCopy.key]"
           :label="item.key"
           v-for="(item, index) in radioArr"
           :key="index"
-          @change="change(finalRadio)"
+          @change="change(form[propDataCopy.key])"
           v-bind="attr"
           >{{ item.value }}
         </el-radio>

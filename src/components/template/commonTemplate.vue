@@ -22,6 +22,7 @@
         </span>
         <slot
           :attr="propDataCopy.extra.component_attrs || prepareAttrs"
+          :form="form"
           :change="upData"
         ></slot>
       </el-form-item>

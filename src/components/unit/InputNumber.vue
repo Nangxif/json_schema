@@ -5,11 +5,11 @@
       :defaultVal="{ value: num }"
       @upData="upData"
     >
-      <template v-slot="{ attr, change }">
+      <template v-slot="{ attr, change, form }">
         <el-input-number
-          v-model="num"
+          v-model="form[propDataCopy.key]"
           v-bind="attr"
-          @change="change(num)"
+          @change="change(form[propDataCopy.key])"
         ></el-input-number>
       </template>
     </commonTemplate>
@@ -28,6 +28,7 @@ export default {
   },
   data() {
     return {
+      propDataCopy: {},
       num: 0
     };
   },
@@ -35,6 +36,12 @@ export default {
     upData(val) {
       this.$emit("upData", val);
     }
+  },
+  created() {
+    // 先拷贝一份
+    this.propDataCopy = {
+      ...this.propData
+    };
   }
 };
 </script>

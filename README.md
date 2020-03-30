@@ -17,13 +17,13 @@
   :propData="propData"
   :defaultVal="{ value: finalRadio }"
   @upData="upData">
-  <template v-slot="{ attr, change }">
+  <template v-slot="{ attr, change, form }">
     <el-radio
-      v-model="finalRadio"
+      v-model="form[propDataCopy.key]"
       :label="item.key"
       v-for="(item, index) in radioArr"
       :key="index"
-      @change="change(finalRadio)"
+      @change="change(form[propDataCopy.key])"
       v-bind="attr"
       >{{ item.value }}
     </el-radio>
@@ -31,7 +31,7 @@
 </commonTemplate>
 ```
 commonTemplate需要传递从上级组件传递下来的数据propData，同时还要有一个默认的初始JSON值defaultVal，这个值的格式一定是{ value: xxx }，@upData="upData"接收填写完之后的值。
-template里面v-slot的attr和change分别是commonTemplate处理之后的自定义属性和数据上传函数
+template里面v-slot的attr、change和form分别是commonTemplate处理之后的自定义属性、数据上传函数和控件表单数据[PS:除了checkbox之外，其他组件的v-model都用form[propDataCopy.key]]
 
 script里面，一定要接收数据，然后再把和这个数据丢给commonTemplate
 ```
@@ -50,5 +50,15 @@ methods: {
   upData(val) {
     this.$emit("upData", val);
   }
+}
+```
+
+记得在created里面拷贝一份数据
+```
+created() {
+  // 先拷贝一份
+  this.propDataCopy = {
+    ...this.propData
+  };
 }
 ```

@@ -6,10 +6,10 @@
     }} -->
     <commonTemplate
       :propData="propData"
-      :defaultVal="{ value: form[propDataCopy.key] }"
+      :defaultVal="{ value: originForm[propDataCopy.key] }"
       @upData="upData"
     >
-      <template v-slot="{ attr, change }">
+      <template v-slot="{ attr, change, form }">
         <el-input
           v-model="form[propDataCopy.key]"
           @change="change(form[propDataCopy.key])"
@@ -33,7 +33,7 @@ export default {
   data() {
     return {
       propDataCopy: {},
-      form: {}
+      originForm: {}
     };
   },
   methods: {
@@ -46,7 +46,7 @@ export default {
     this.propDataCopy = {
       ...this.propData
     };
-    this.form = {
+    this.originForm = {
       [this.propDataCopy.key]: "",
       ...this.propDataCopy
     };

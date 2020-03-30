@@ -5,13 +5,13 @@
       :defaultVal="{ value: date }"
       @upData="upData"
     >
-      <template v-slot="{ attr, change }">
+      <template v-slot="{ attr, change, form }">
         <el-date-picker
-          v-model="date"
+          v-model="form[propDataCopy.key]"
           type="date"
           placeholder="选择日期"
           v-bind="attr"
-          @change="change(date)"
+          @change="change(form[propDataCopy.key])"
         >
         </el-date-picker>
       </template>
@@ -31,6 +31,7 @@ export default {
   },
   data() {
     return {
+      propDataCopy: {},
       date: new Date()
     };
   },
@@ -38,6 +39,12 @@ export default {
     upData(val) {
       this.$emit("upData", val);
     }
+  },
+  created() {
+    // 先拷贝一份
+    this.propDataCopy = {
+      ...this.propData
+    };
   }
 };
 </script>

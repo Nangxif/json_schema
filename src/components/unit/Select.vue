@@ -5,18 +5,18 @@
       :defaultVal="{ value: finalSelect }"
       @upData="upData"
     >
-      <template v-slot="{ attr, change }">
+      <template v-slot="{ attr, change, form }">
         <el-select
-          v-model="finalSelect"
+          v-model="form[propDataCopy.key]"
           placeholder="请选择"
           v-bind="attr"
           @change="
             change(
-              typeof finalSelect == 'string'
-                ? finalSelect.length == 0
+              typeof form[propDataCopy.key] == 'string'
+                ? form[propDataCopy.key].length == 0
                   ? []
-                  : [finalSelect]
-                : finalSelect
+                  : [form[propDataCopy.key]]
+                : form[propDataCopy.key]
             )
           "
         >

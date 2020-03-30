@@ -5,11 +5,11 @@
       :defaultVal="{ value: time }"
       @upData="upData"
     >
-      <template v-slot="{ attr, change }">
+      <template v-slot="{ attr, change, form }">
         <el-time-picker
-          v-model="time"
+          v-model="form[propDataCopy.key]"
           placeholder="任意时间点"
-          @change="change(time)"
+          @change="change(form[propDataCopy.key])"
           v-bind="attr"
         >
         </el-time-picker>
@@ -30,6 +30,7 @@ export default {
   },
   data() {
     return {
+      propDataCopy: {},
       time: new Date()
     };
   },
@@ -37,6 +38,12 @@ export default {
     upData(val) {
       this.$emit("upData", val);
     }
+  },
+  created() {
+    // 先拷贝一份
+    this.propDataCopy = {
+      ...this.propData
+    };
   }
 };
 </script>
