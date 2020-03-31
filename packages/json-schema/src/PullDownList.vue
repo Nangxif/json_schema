@@ -51,7 +51,7 @@
 <script>
 import { upperFirst } from "lodash";
 export default {
-  name: "PullDownList",
+  name: "Jsonschema",
   props: {
     schema: {
       type: Object,

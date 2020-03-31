@@ -35,11 +35,11 @@
             <el-row>
               <el-col :span="24">
                 <div class="pulldown">
-                  <PullDownList
+                  <Jsonschema
                     :schema="dataJson"
                     @upData="upData"
                     v-if="isShowJsonHtml"
-                  ></PullDownList>
+                  ></Jsonschema>
                 </div>
               </el-col>
             </el-row>
@@ -62,7 +62,7 @@
 
 <script>
 import { mapMutations } from "vuex";
-import PullDownList from "../components/PullDownList";
+// import PullDownList from "../components/PullDownList";
 const dataJson = require("../files/data.json");
 export default {
   name: "Home",
@@ -77,9 +77,9 @@ export default {
       which2: true
     };
   },
-  components: {
-    PullDownList
-  },
+  // components: {
+  //   PullDownList
+  // },
   watch: {
     which() {
       this.leftandrightM();

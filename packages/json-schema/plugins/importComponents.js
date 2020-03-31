@@ -10,25 +10,9 @@ import Vue from "vue";
 
 const requireComponent = require.context(
   // 其组件目录的相对路径
-  "../components",
+  "../src",
   // 是否查询其子目录
-  false,
-  // 匹配基础组件文件名的正则表达式
-  /\w+\.(vue|js)$/
-);
-const requireUnit = require.context(
-  // 其组件目录的相对路径
-  "../components/unit",
-  // 是否查询其子目录
-  false,
-  // 匹配基础组件文件名的正则表达式
-  /\w+\.(vue|js)$/
-);
-const requireTemplate = require.context(
-  // 其组件目录的相对路径
-  "../components/template",
-  // 是否查询其子目录
-  false,
+  true,
   // 匹配基础组件文件名的正则表达式
   /\w+\.(vue|js)$/
 );
@@ -54,5 +38,3 @@ const initComponent = requireList => {
   });
 };
 initComponent(requireComponent);
-initComponent(requireUnit);
-initComponent(requireTemplate);

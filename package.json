@@ -1,12 +1,23 @@
 {
-  "name": "json_schema",
-  "version": "0.1.0",
-  "private": true,
+  "name": "@nangxif/json-schema",
+  "author": "Nangxif",
+  "version": "0.1.1",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "lib": "vue-cli-service build --target lib --name json_schema --dest lib packages/index.js"
   },
+  "description":"A plugin to produce jsonschema",
+  "main":"lib/json_schema.umd.min.js",
+  "keywords":["json_schema","element-ui"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nangxif/json_schema.git"
+  },
+  "homepage": "https://github.com/Nangxif/json_schema#readme",
+  "private":false,
+  "license": "ISC",
   "dependencies": {
     "ajv": "^6.12.0",
     "core-js": "^3.6.4",
@@ -29,5 +40,13 @@
     "prettier": "^1.19.1",
     "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.11"
-  }
+  },
+  "browserslist": [
+    "> 1%",
+    "ios >= 9",
+    "android >= 5",
+    "chrome >= 36",
+    "not dead",
+    "not op_mini all"
+  ]
 }
