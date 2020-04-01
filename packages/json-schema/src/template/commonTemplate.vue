@@ -61,7 +61,6 @@ export default {
   watch: {
     tool: {
       handler(val) {
-        console.log(val);
         //   控制左右显示还是上下显示
         if (val.leftandright) {
           this.setting = {
@@ -142,7 +141,7 @@ export default {
         };
     if (this.propDataCopy.extra.component_attrs) {
       this.originAttrs = { ...this.propDataCopy.extra.component_attrs };
-      if (!this.canEdit) {
+      if (!this.tool.canEdit) {
         this.propDataCopy.extra.component_attrs = {
           ...this.propDataCopy.extra.component_attrs,
           disabled: true
