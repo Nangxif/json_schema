@@ -30,7 +30,6 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
 import validationFilter from "../../util/validation";
 export default {
   name: "common",
@@ -48,43 +47,51 @@ export default {
       default() {
         return {};
       }
-    }
-  },
-  computed: {
-    ...mapState(["leftandright", "canEdit"])
-  },
-  watch: {
-    //   控制左右显示还是上下显示
-    leftandright(val) {
-      if (val) {
-        this.setting = {
-          "label-width": "150px",
-          inline: true
-        };
-      } else {
-        this.setting = {
-          "label-position": "top"
+    },
+    tool: {
+      type: Object,
+      default: () => {
+        return {
+          leftandright: true,
+          canEdit: true
         };
       }
-    },
-    // 控制是否屏蔽输入框等组件
-    canEdit(val) {
-      if (val) {
-        if (this.originAttrs) {
-          this.propDataCopy.extra.component_attrs = { ...this.originAttrs };
+    }
+  },
+  watch: {
+    tool: {
+      handler(val) {
+        console.log(val);
+        //   控制左右显示还是上下显示
+        if (val.leftandright) {
+          this.setting = {
+            "label-width": "150px",
+            inline: true
+          };
+        } else {
+          this.setting = {
+            "label-position": "top"
+          };
         }
-        this.prepareAttrs = {};
-      } else {
-        if (this.originAttrs) {
-          this.propDataCopy.extra.component_attrs = {
-            ...this.propDataCopy.extra.component_attrs,
+        // 控制是否屏蔽输入框等组件
+        if (val.canEdit) {
+          if (this.originAttrs) {
+            this.propDataCopy.extra.component_attrs = { ...this.originAttrs };
+          }
+          this.prepareAttrs = {};
+        } else {
+          if (this.originAttrs) {
+            this.propDataCopy.extra.component_attrs = {
+              ...this.propDataCopy.extra.component_attrs,
+              disabled: true
+            };
+          }
+          this.prepareAttrs = {
             disabled: true
           };
         }
-        this.prepareAttrs = {
-          disabled: true
-        };
-      }
+      },
+      deep: true
     }
   },
   data() {
@@ -125,7 +132,7 @@ export default {
     };
 
     // 配置项处理
-    this.setting = this.leftandright
+    this.setting = this.tool.leftandright
       ? {
           "label-width": "150px",
           inline: true
@@ -142,7 +149,7 @@ export default {
         };
       }
     }
-    if (!this.canEdit) {
+    if (!this.tool.canEdit) {
       this.prepareAttrs = {
         disabled: true
       };

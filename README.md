@@ -2,19 +2,21 @@
 
 ## 目录
 
->components
->>template  共有组件  
->>unit 所有组件，目前有Checkbox、DatePicker、Input、InputNumber、Radio、Select、TimePicker
+>packages 
+>>json-schema 
+>>>src 
+>>>>template  共有组件  
+>>>>unit 所有组件，目前有Checkbox、DatePicker、Input、InputNumber、Radio、Select、TimePicker
 
 ## 使用方法
 
 ```
-import PullDownList form 'PullDownList';
+import Jsonschema form 'Jsonschema';
 
-<PullDownList
+<Jsonschema
   :schema="dataJson"
   @upData="upData"
-></PullDownList>
+></Jsonschema>
 
 // :schema: 传入的json数据入口
 // @upData: 生成的json数据出口

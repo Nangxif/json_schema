@@ -12,13 +12,14 @@
           class="child_list"
         >
           <!-- 一般情况下的嵌套 -->
-          <PullDownList
+          <Jsonschema
             :schema="{
               ...item.properties,
               key: item.key
             }"
+            :tool="tool"
             @upData="upData"
-          ></PullDownList>
+          ></Jsonschema>
         </el-collapse-item>
       </el-collapse>
 
@@ -31,6 +32,7 @@
             arrayIndex1: index,
             level: schemaCopy.level
           }"
+          :tool="tool"
           @deleteItem="deleteItem"
           @upData="upData"
         ></ArrayList>
@@ -41,6 +43,7 @@
         <component
           :is="upperFirst(item.extra && item.extra.component_type)"
           :propData="item"
+          :tool="tool"
           @upData="upData"
           v-if="item.extra"
         ></component>
@@ -57,6 +60,15 @@ export default {
       type: Object,
       default: () => {
         return {};
+      }
+    },
+    tool: {
+      type: Object,
+      default: () => {
+        return {
+          leftandright: true,
+          canEdit: true
+        };
       }
     }
   },

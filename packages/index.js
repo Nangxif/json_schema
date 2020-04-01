@@ -3,7 +3,6 @@ import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 
 const components = [Jsonschema];
-
 const install = Vue => {
   Vue.use(ElementUI);
   if (install.installed) return;

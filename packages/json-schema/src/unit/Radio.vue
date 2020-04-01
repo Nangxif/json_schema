@@ -3,6 +3,7 @@
     <commonTemplate
       :propData="propData"
       :defaultVal="{ value: finalRadio }"
+      :tool="tool"
       @upData="upData"
     >
       <template v-slot="{ attr, change, form }">
@@ -27,6 +28,15 @@ export default {
       type: Object,
       default() {
         return {};
+      }
+    },
+    tool: {
+      type: Object,
+      default: () => {
+        return {
+          leftandright: true,
+          canEdit: true
+        };
       }
     }
   },

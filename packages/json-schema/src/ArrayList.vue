@@ -91,6 +91,15 @@ export default {
       default() {
         return {};
       }
+    },
+    tool: {
+      type: Object,
+      default: () => {
+        return {
+          leftandright: true,
+          canEdit: true
+        };
+      }
     }
   },
   computed: {

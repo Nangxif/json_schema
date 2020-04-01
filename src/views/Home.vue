@@ -37,6 +37,7 @@
                 <div class="pulldown">
                   <Jsonschema
                     :schema="dataJson"
+                    :tool="tool"
                     @upData="upData"
                     v-if="isShowJsonHtml"
                   ></Jsonschema>
@@ -74,7 +75,11 @@ export default {
       isShowJsonHtml: false,
       ajv: null,
       which: true,
-      which2: true
+      which2: true,
+      tool: {
+        leftandright: true,
+        canEdit: true
+      }
     };
   },
   // components: {
@@ -82,10 +87,12 @@ export default {
   // },
   watch: {
     which() {
-      this.leftandrightM();
+      // this.leftandrightM();
+      this.tool.leftandright = !this.tool.leftandright;
     },
     which2() {
-      this.canEditM();
+      this.tool.canEdit = !this.tool.canEdit;
+      // this.canEditM();
     }
   },
   methods: {

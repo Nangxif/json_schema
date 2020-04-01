@@ -3,6 +3,7 @@
     <commonTemplate
       :propData="propData"
       :defaultVal="{ value: finalCheckbox }"
+      :tool="tool"
       @upData="upData"
     >
       <template v-slot="{ attr, change }">
@@ -30,6 +31,15 @@ export default {
       type: Object,
       default() {
         return {};
+      }
+    },
+    tool: {
+      type: Object,
+      default: () => {
+        return {
+          leftandright: true,
+          canEdit: true
+        };
       }
     }
   },
