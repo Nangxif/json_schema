@@ -1,10 +1,3 @@
-/*
- * @Author: Sexy
- * @Date: 2019-11-06 14:09:45
- * @LastEditors: Sexy
- * @LastEditTime: 2019-11-06 14:20:39
- * @Description: file content
- */
 import { upperFirst, camelCase } from "lodash";
 import Vue from "vue";
 

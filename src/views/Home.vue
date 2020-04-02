@@ -62,8 +62,7 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
-// import PullDownList from "../components/PullDownList";
+import Jsonschema from "../../packages/json-schema/index";
 const dataJson = require("../files/data.json");
 export default {
   name: "Home",
@@ -82,21 +81,18 @@ export default {
       }
     };
   },
-  // components: {
-  //   PullDownList
-  // },
   watch: {
     which() {
-      // this.leftandrightM();
       this.tool.leftandright = !this.tool.leftandright;
     },
     which2() {
       this.tool.canEdit = !this.tool.canEdit;
-      // this.canEditM();
     }
   },
+  components: {
+    Jsonschema
+  },
   methods: {
-    ...mapMutations(["leftandrightM", "canEditM"]),
     // 复制功能
     copy() {
       const range = document.createRange();

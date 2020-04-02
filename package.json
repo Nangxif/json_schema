@@ -8,8 +8,7 @@
     "lint": "vue-cli-service lint",
     "lib": "vue-cli-service build --target lib --name json_schema --dest lib packages/index.js"
   },
-  "description":"A plugin to produce jsonschema",
-  "main":"lib/json_schema.umd.min.js",
+  "description":"一个可以根据固定格式的json生成表单并返回表单相应填值的插件",
   "keywords":["json_schema","element-ui"],
   "repository": {
     "type": "git",

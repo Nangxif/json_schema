@@ -82,7 +82,6 @@
 </template>
 <script>
 import { upperFirst } from "lodash";
-import { mapState } from "vuex";
 export default {
   name: "arraylist",
   props: {
@@ -101,9 +100,6 @@ export default {
         };
       }
     }
-  },
-  computed: {
-    ...mapState(["leftandright"])
   },
   data() {
     return {
