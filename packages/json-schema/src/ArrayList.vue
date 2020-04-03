@@ -24,7 +24,7 @@
             !ArrayListDataCopy.isNested ? index : ArrayListDataCopy.arrayIndex
           }} -->
             <el-col
-              :span="leftandright ? 1 : 2"
+              :span="tool.leftandright ? 1 : 2"
               v-if="ArrayListDataCopy.additionalItems"
               ><el-button round size="small" class="indexButton">{{
                 index + 1
@@ -33,7 +33,7 @@
             <el-col
               :span="
                 ArrayListDataCopy.additionalItems
-                  ? leftandright
+                  ? tool.leftandright
                     ? 23
                     : 22
                   : 24
@@ -54,6 +54,7 @@
                     level: ArrayListDataCopy.level + 1,
                     isNested: ArrayListDataCopy.isNested
                   }"
+                  :tool="tool"
                   @upData="upData"
                   v-if="i.extra"
                 ></component>
@@ -68,6 +69,7 @@
                     level: ArrayListDataCopy.level + 1,
                     isNested: true
                   }"
+                  :tool="tool"
                   @upData="upData"
                   @deleteItem="deleteItem"
                   v-else

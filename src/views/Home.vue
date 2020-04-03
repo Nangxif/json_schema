@@ -72,7 +72,6 @@ export default {
       JsonInputContent: JSON.stringify(dataJson),
       resultJSON: "还没生成过JSON",
       isShowJsonHtml: false,
-      ajv: null,
       which: true,
       which2: true,
       tool: {

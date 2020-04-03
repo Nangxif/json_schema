@@ -17,7 +17,7 @@
               ...item.properties,
               key: item.key
             }"
-            :tool="tool"
+            :tool="toolCopy"
             @upData="upData"
           ></Jsonschema>
         </el-collapse-item>
@@ -32,7 +32,7 @@
             arrayIndex1: index,
             level: schemaCopy.level
           }"
-          :tool="tool"
+          :tool="toolCopy"
           @deleteItem="deleteItem"
           @upData="upData"
         ></ArrayList>
@@ -43,7 +43,7 @@
         <component
           :is="upperFirst(item.extra && item.extra.component_type)"
           :propData="item"
-          :tool="tool"
+          :tool="toolCopy"
           @upData="upData"
           v-if="item.extra"
         ></component>
@@ -103,8 +103,26 @@ export default {
       ],
       schemaData: [],
       resultObject: {},
-      lastData: null
+      lastData: null,
+      toolCopy: { ...this.tool }
     };
+  },
+  watch: {
+    tool: {
+      handler(val) {
+        if (val["leftandright"] == undefined) {
+          this.toolCopy["leftandright"] = true;
+        } else {
+          this.toolCopy["leftandright"] = val["leftandright"];
+        }
+        if (val["canEdit"] == undefined) {
+          this.toolCopy["canEdit"] = true;
+        } else {
+          this.toolCopy["canEdit"] = val["canEdit"];
+        }
+      },
+      deep: true
+    }
   },
   methods: {
     upperFirst,
@@ -183,6 +201,15 @@ export default {
     if (!this.schemaCopy.level) {
       this.schemaCopy.level = 1;
     }
+    this.toolCopy["leftandright"] == undefined &&
+      (this.toolCopy["leftandright"] = true);
+    this.toolCopy["canEdit"] == undefined && (this.toolCopy["canEdit"] = true);
+    // if (this.toolCopy["leftandright"] !== undefined) {
+    //   this.toolCopy["leftandright"] = this.tool["leftandright"];
+    // }
+    // if (this.toolCopy["canEdit"] == undefined) {
+    //   this.toolCopy["canEdit"] = this.tool["canEdit"];
+    // }
     if (!a) {
       // 说明是第一层
       this.schemaData.push({
