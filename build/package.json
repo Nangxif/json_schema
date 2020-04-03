@@ -1,6 +1,6 @@
 {
   "name": "@nangxif/json-schema",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "一个可以根据固定格式的json生成表单并返回表单相应填值的插件",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -14,7 +14,7 @@
     "url": "git+https://github.com/Nangxif/json_schema.git"
   },
   "keywords": [
-    "json_schema",
+    "json-schema",
     "element-ui"
   ],
   "private":false,

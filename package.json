@@ -9,7 +9,7 @@
     "lib": "vue-cli-service build --target lib --name json_schema --dest lib packages/index.js"
   },
   "description":"一个可以根据固定格式的json生成表单并返回表单相应填值的插件",
-  "keywords":["json_schema","element-ui"],
+  "keywords":["json-schema","element-ui"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Nangxif/json_schema.git"
