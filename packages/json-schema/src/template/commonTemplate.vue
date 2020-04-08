@@ -30,9 +30,9 @@
   </div>
 </template>
 <script>
-import validationFilter from "../../util/validation";
+import validationFilter from '../../util/validation';
 export default {
-  name: "common",
+  name: 'common',
   props: {
     // 通过每个组件传递进来的json数据
     propData: {
@@ -64,12 +64,12 @@ export default {
         //   控制左右显示还是上下显示
         if (val.leftandright) {
           this.setting = {
-            "label-width": "150px",
+            'label-width': '150px',
             inline: true
           };
         } else {
           this.setting = {
-            "label-position": "top"
+            'label-position': 'top'
           };
         }
         // 控制是否屏蔽输入框等组件
@@ -91,6 +91,47 @@ export default {
         }
       },
       deep: true
+    },
+    form: {
+      handler(val) {
+        let res = val[this.propDataCopy.key];
+        if (this.propDataCopy.type == 'number') {
+          if (this.propDataCopy.minimum != undefined) {
+            if (!this.propDataCopy.exclusiveMinimum) {
+              if (this.propDataCopy.minimum > res) {
+                this.$nextTick(() => {
+                  this.form[this.propDataCopy.key] = this.propDataCopy.minimum;
+                });
+              }
+            } else {
+              if (this.propDataCopy.minimum >= res) {
+                this.$nextTick(() => {
+                  this.form[this.propDataCopy.key] =
+                    this.propDataCopy.minimum + 1;
+                });
+              }
+            }
+          }
+
+          if (this.propDataCopy.maximum != undefined) {
+            if (!this.propDataCopy.exclusiveMaximum) {
+              if (this.propDataCopy.maximum < res) {
+                this.$nextTick(() => {
+                  this.form[this.propDataCopy.key] = this.propDataCopy.maximum;
+                });
+              }
+            } else {
+              if (this.propDataCopy.maximum <= res) {
+                this.$nextTick(() => {
+                  this.form[this.propDataCopy.key] =
+                    this.propDataCopy.maximum - 1;
+                });
+              }
+            }
+          }
+        }
+      },
+      deep: true
     }
   },
   data() {
@@ -108,7 +149,7 @@ export default {
       let upd = data || this.defaultVal.value;
       // 一旦修改了输入框的内容，要及时提交输入的信息，要区分有没有带数组的序号
       this.$emit(
-        "upData",
+        'upData',
         this.propDataCopy[`arrayIndex${this.propDataCopy.level}`] == undefined
           ? {
               [this.propDataCopy.key]: upd
@@ -133,11 +174,11 @@ export default {
     // 配置项处理
     this.setting = this.tool.leftandright
       ? {
-          "label-width": "150px",
+          'label-width': '150px',
           inline: true
         }
       : {
-          "label-position": "top"
+          'label-position': 'top'
         };
     if (this.propDataCopy.extra.component_attrs) {
       this.originAttrs = { ...this.propDataCopy.extra.component_attrs };
@@ -158,7 +199,7 @@ export default {
       this.propDataCopy.extra.validation
     );
     this.form = {
-      [this.propDataCopy.key]: "",
+      [this.propDataCopy.key]: '',
       ...this.propDataCopy
     };
   },

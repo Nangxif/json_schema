@@ -115,14 +115,40 @@ export default {
   methods: {
     upperFirst,
     addItem() {
-      this.showArray.push(this.showArray[0]);
-      // 添加的时候要给最终生成的数组添加{}
-      this.resultArray.push({});
+      if (
+        this.ArrayListDataCopy.maxItems &&
+        this.ArrayListDataCopy.maxItems >= this.showArray.length + 1
+      ) {
+        this.showArray.push(this.showArray[0]);
+        // 添加的时候要给最终生成的数组添加{}
+        this.resultArray.push({});
+      } else if (!this.ArrayListDataCopy.maxItems) {
+        this.showArray.push(this.showArray[0]);
+        // 添加的时候要给最终生成的数组添加{}
+        this.resultArray.push({});
+      } else {
+        this.$message.error(
+          `数组个数不能超过${this.ArrayListDataCopy.maxItems}`
+        );
+      }
     },
     removeItem(index) {
-      this.showArray.splice(index, 1);
-      this.resultArray.slice(index, 1);
-      this.$emit("deleteItem", [].concat(this.ArrayListDataCopy.key, index));
+      if (
+        this.ArrayListDataCopy.minItems &&
+        this.ArrayListDataCopy.minItems <= this.showArray.length - 1
+      ) {
+        this.showArray.splice(index, 1);
+        this.resultArray.slice(index, 1);
+        this.$emit("deleteItem", [].concat(this.ArrayListDataCopy.key, index));
+      } else if (!this.ArrayListDataCopy.minItems) {
+        this.showArray.splice(index, 1);
+        this.resultArray.slice(index, 1);
+        this.$emit("deleteItem", [].concat(this.ArrayListDataCopy.key, index));
+      } else {
+        this.$message.error(
+          `数组个数不能低于${this.ArrayListDataCopy.minItems}`
+        );
+      }
     },
     deleteItem(val) {
       this.$emit(

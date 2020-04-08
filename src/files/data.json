@@ -116,11 +116,15 @@
                   "title":"app分享配置个数",
                   "type":"number",
                   "description":"app分享配置个数的描述",
+                  "minimum": 0,
+                  "exclusiveMinimum": true,
+                  "exclusiveMaximum":false,
+                  "maximum": 8,
                   "extra":{
                     "component_type":"inputNumber",
                     "component_attrs": {
                       "min": 0,
-                      "max":2
+                      "max":9
                     },
                     "validation":[]
                   }
@@ -359,6 +363,8 @@
                   "title":"我是海报配置标题",
                   "type": "array",
                   "additionalItems":true,
+                  "minItems": 2,
+                  "maxItems":3,
                   "items": {
                     "type": "object",
                     "title":"海报项配置",

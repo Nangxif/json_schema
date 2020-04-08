@@ -18,7 +18,7 @@
 </template>
 <script>
 export default {
-  name: "inputnumber",
+  name: 'inputnumber',
   props: {
     propData: {
       type: Object,
@@ -44,7 +44,7 @@ export default {
   },
   methods: {
     upData(val) {
-      this.$emit("upData", val);
+      this.$emit('upData', val);
     }
   },
   created() {
@@ -52,6 +52,9 @@ export default {
     this.propDataCopy = {
       ...this.propData
     };
+    if (this.propDataCopy.type !== 'number') {
+      this.$message.error('InputNumber的类型必须为number');
+    }
   }
 };
 </script>
