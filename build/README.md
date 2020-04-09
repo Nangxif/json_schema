@@ -7,6 +7,7 @@
 npm i @nangxif/json-schema -S
 
 import Jsonschema form '@nangxif/json-schema';
+import "@nangxif/json-schema/dist/css/common.css";
 
 <Jsonschema
   :schema="dataJson"

@@ -230,6 +230,7 @@ export default {
 <style lang="scss" scoped>
 .pull_down_list {
   overflow: hidden;
+  text-align: left;
   .child_list {
     width: 98%;
     margin-left: 2%;
