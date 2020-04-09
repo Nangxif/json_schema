@@ -22,7 +22,7 @@
 </template>
 <script>
 export default {
-  name: "inp",
+  name: 'inp',
   props: {
     propData: {
       type: Object,
@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     upData(val) {
-      this.$emit("upData", val);
+      this.$emit('upData', val);
     }
   },
   created() {
@@ -57,7 +57,7 @@ export default {
       ...this.propData
     };
     this.originForm = {
-      [this.propDataCopy.key]: "",
+      [this.propDataCopy.key]: '',
       ...this.propDataCopy
     };
   }

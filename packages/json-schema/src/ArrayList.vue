@@ -3,9 +3,9 @@
     <div class="arrayList_title">
       {{ ArrayListDataCopy.title }}
       <div v-if="ArrayListDataCopy.additionalItems" class="addButton">
-        <el-button round size="middle" @click="addItem" class="addButton_item"
-          >添加</el-button
-        >
+        <el-button round size="middle" @click="addItem" class="addButton_item">
+          添加
+        </el-button>
       </div>
     </div>
     <div class="child_list" v-for="(item, index) in showArray" :key="index">
@@ -15,8 +15,9 @@
         @click="removeItem(index)"
         class="removeButton_item"
         v-if="index !== 0"
-        >删除</el-button
       >
+        删除
+      </el-button>
       <el-collapse v-model="activeNames" @change="handleChange">
         <el-collapse-item :title="ArrayListDataCopy.items.title" :name="index">
           <el-row>
@@ -26,10 +27,11 @@
             <el-col
               :span="tool.leftandright ? 1 : 2"
               v-if="ArrayListDataCopy.additionalItems"
-              ><el-button round size="small" class="indexButton">{{
-                index + 1
-              }}</el-button></el-col
             >
+              <el-button round size="small" class="indexButton">
+                {{ index + 1 }}
+              </el-button>
+            </el-col>
             <el-col
               :span="
                 ArrayListDataCopy.additionalItems
@@ -83,9 +85,9 @@
   </div>
 </template>
 <script>
-import { upperFirst } from "lodash";
+import { upperFirst } from 'lodash';
 export default {
-  name: "arraylist",
+  name: 'arraylist',
   props: {
     ArrayListData: {
       type: Object,
@@ -105,7 +107,7 @@ export default {
   },
   data() {
     return {
-      activeNames: ["2"],
+      activeNames: ['2'],
       ArrayListDataCopy: this.ArrayListData,
       showArray: [],
       resultArray: [],
@@ -139,11 +141,11 @@ export default {
       ) {
         this.showArray.splice(index, 1);
         this.resultArray.slice(index, 1);
-        this.$emit("deleteItem", [].concat(this.ArrayListDataCopy.key, index));
+        this.$emit('deleteItem', [].concat(this.ArrayListDataCopy.key, index));
       } else if (!this.ArrayListDataCopy.minItems) {
         this.showArray.splice(index, 1);
         this.resultArray.slice(index, 1);
-        this.$emit("deleteItem", [].concat(this.ArrayListDataCopy.key, index));
+        this.$emit('deleteItem', [].concat(this.ArrayListDataCopy.key, index));
       } else {
         this.$message.error(
           `数组个数不能低于${this.ArrayListDataCopy.minItems}`
@@ -152,7 +154,7 @@ export default {
     },
     deleteItem(val) {
       this.$emit(
-        "deleteItem",
+        'deleteItem',
         [
           this.ArrayListDataCopy.key,
           this.ArrayListDataCopy[`arrayIndex${this.ArrayListDataCopy.level}`]
@@ -199,7 +201,7 @@ export default {
           }
         );
         // 最后一层上传给对象的数组
-        this.$emit("upData", {
+        this.$emit('upData', {
           [this.ArrayListDataCopy.key]: this.resultArray
         });
       } else {
@@ -214,7 +216,7 @@ export default {
         ];
         delete this.resultArray[val[`arrayIndex${val.level}`]].level;
         //   如果是嵌套的话，记得带上数组序号方便查找，这里的val.arrayIndex之所以能正常叠加，是因为在component的时候，有数据传入
-        this.$emit("upData", {
+        this.$emit('upData', {
           [this.ArrayListDataCopy.key]: this.resultArray,
           level: this.ArrayListDataCopy.level,
           [`arrayIndex${this.ArrayListDataCopy.level}`]: this.ArrayListDataCopy[

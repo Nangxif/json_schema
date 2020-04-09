@@ -13,15 +13,14 @@
           placeholder="选择日期"
           v-bind="attr"
           @change="change(form[propDataCopy.key])"
-        >
-        </el-date-picker>
+        ></el-date-picker>
       </template>
     </commonTemplate>
   </div>
 </template>
 <script>
 export default {
-  name: "datepicker",
+  name: 'datepicker',
   props: {
     propData: {
       type: Object,
@@ -47,7 +46,7 @@ export default {
   },
   methods: {
     upData(val) {
-      this.$emit("upData", val);
+      this.$emit('upData', val);
     }
   },
   created() {

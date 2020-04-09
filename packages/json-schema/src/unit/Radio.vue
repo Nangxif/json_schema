@@ -14,7 +14,8 @@
           :key="index"
           @change="change(form[propDataCopy.key])"
           v-bind="attr"
-          >{{ item.value }}
+        >
+          {{ item.value }}
         </el-radio>
       </template>
     </commonTemplate>
@@ -22,7 +23,7 @@
 </template>
 <script>
 export default {
-  name: "rad",
+  name: 'rad',
   props: {
     propData: {
       type: Object,
@@ -43,13 +44,13 @@ export default {
   data() {
     return {
       propDataCopy: {},
-      finalRadio: "",
+      finalRadio: '',
       radioArr: []
     };
   },
   methods: {
     upData(val) {
-      this.$emit("upData", val);
+      this.$emit('upData', val);
     }
   },
   created() {
@@ -58,7 +59,7 @@ export default {
       ...this.propData
     };
     if (this.propDataCopy.enum.length != this.propDataCopy.enumNames.length) {
-      this.$message.error("Radio的enum和enumNames数量不匹配");
+      this.$message.error('Radio的enum和enumNames数量不匹配');
     } else {
       this.propDataCopy.enum.forEach((item, index) => {
         this.radioArr.push({

@@ -52,9 +52,9 @@
   </div>
 </template>
 <script>
-import { upperFirst } from "lodash";
+import { upperFirst } from 'lodash';
 export default {
-  name: "Jsonschema",
+  name: 'Jsonschema',
   props: {
     schema: {
       type: Object,
@@ -74,32 +74,32 @@ export default {
   },
   data() {
     return {
-      activeNames: ["1"],
+      activeNames: ['1'],
       schemaCopy: this.schema,
       keys: [
-        "type",
-        "title",
-        "description",
-        "default",
-        "properties",
-        "required",
-        "additionalProperties",
-        "minProperties",
-        "maxProperties",
-        "minItems",
-        "maxItems",
-        "uniqueItems",
-        "items",
-        "additionalItems",
-        "minimum",
-        "exclusiveMinimum",
-        "maximum",
-        "exclusiveMaximum",
-        "multipleOf",
-        "minLength",
-        "maxLength",
-        "pattern",
-        "format"
+        'type',
+        'title',
+        'description',
+        'default',
+        'properties',
+        'required',
+        'additionalProperties',
+        'minProperties',
+        'maxProperties',
+        'minItems',
+        'maxItems',
+        'uniqueItems',
+        'items',
+        'additionalItems',
+        'minimum',
+        'exclusiveMinimum',
+        'maximum',
+        'exclusiveMaximum',
+        'multipleOf',
+        'minLength',
+        'maxLength',
+        'pattern',
+        'format'
       ],
       schemaData: [],
       resultObject: {},
@@ -110,15 +110,15 @@ export default {
   watch: {
     tool: {
       handler(val) {
-        if (val["leftandright"] == undefined) {
-          this.toolCopy["leftandright"] = true;
+        if (val['leftandright'] == undefined) {
+          this.toolCopy['leftandright'] = true;
         } else {
-          this.toolCopy["leftandright"] = val["leftandright"];
+          this.toolCopy['leftandright'] = val['leftandright'];
         }
-        if (val["canEdit"] == undefined) {
-          this.toolCopy["canEdit"] = true;
+        if (val['canEdit'] == undefined) {
+          this.toolCopy['canEdit'] = true;
         } else {
-          this.toolCopy["canEdit"] = val["canEdit"];
+          this.toolCopy['canEdit'] = val['canEdit'];
         }
       },
       deep: true
@@ -136,9 +136,9 @@ export default {
               return total[item];
             }
             return total;
-          }, this.lastData["main_key"])
+          }, this.lastData['main_key'])
           .splice(val[val.length - 1]);
-        this.$emit("upData", { ...this.lastData.main_key });
+        this.$emit('upData', { ...this.lastData.main_key });
       }
     },
     // 有时候upData是直接通过子数组的change传递上来的，没有经过处理
@@ -181,13 +181,13 @@ export default {
         this.lastData = {
           [this.schemaCopy.key]: { ...this.resultObject }
         };
-        this.$emit("upData", {
+        this.$emit('upData', {
           [this.schemaCopy.key]: { ...this.resultObject }
         });
       } else {
         // 最后上传的出口
         this.lastData = { ...this.resultObject };
-        this.$emit("upData", { ...this.resultObject.main_key });
+        this.$emit('upData', { ...this.resultObject.main_key });
       }
     }
   },
@@ -201,9 +201,9 @@ export default {
     if (!this.schemaCopy.level) {
       this.schemaCopy.level = 1;
     }
-    this.toolCopy["leftandright"] == undefined &&
-      (this.toolCopy["leftandright"] = true);
-    this.toolCopy["canEdit"] == undefined && (this.toolCopy["canEdit"] = true);
+    this.toolCopy['leftandright'] == undefined &&
+      (this.toolCopy['leftandright'] = true);
+    this.toolCopy['canEdit'] == undefined && (this.toolCopy['canEdit'] = true);
     // if (this.toolCopy["leftandright"] !== undefined) {
     //   this.toolCopy["leftandright"] = this.tool["leftandright"];
     // }
@@ -213,7 +213,7 @@ export default {
     if (!a) {
       // 说明是第一层
       this.schemaData.push({
-        key: "main_key",
+        key: 'main_key',
         ...this.schemaCopy
       });
     } else if (!b) {

@@ -195,9 +195,25 @@ export default {
       };
     }
     // 定义规则
-    this.rules[this.propDataCopy.key] = validationFilter(
-      this.propDataCopy.extra.validation
-    );
+    // 在定义规则之前，先看看是否是数据格式，而且有没有multipleOf，有的话添加规则
+    if (
+      this.propDataCopy.type == 'number' &&
+      this.propDataCopy.multipleOf != undefined
+    ) {
+      this.rules[this.propDataCopy.key] = validationFilter([
+        ...this.propDataCopy.extra.validation,
+        {
+          type: 'multipleOf',
+          message: `输入的数字必须是${this.propDataCopy.multipleOf}的倍数`,
+          param: this.propDataCopy.multipleOf
+        }
+      ]);
+    } else {
+      this.rules[this.propDataCopy.key] = validationFilter(
+        this.propDataCopy.extra.validation
+      );
+    }
+
     this.form = {
       [this.propDataCopy.key]: '',
       ...this.propDataCopy

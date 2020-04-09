@@ -119,12 +119,13 @@
                   "minimum": 0,
                   "exclusiveMinimum": true,
                   "exclusiveMaximum":false,
-                  "maximum": 8,
+                  "maximum": 10,
+                  "multipleOf":2,
                   "extra":{
                     "component_type":"inputNumber",
                     "component_attrs": {
                       "min": 0,
-                      "max":9
+                      "max":10
                     },
                     "validation":[]
                   }

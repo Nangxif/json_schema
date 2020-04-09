@@ -16,8 +16,9 @@
             v-for="(item, index) in checkboxArr"
             :key="index"
             v-bind="attr"
-            >{{ item.value }}</el-checkbox
           >
+            {{ item.value }}
+          </el-checkbox>
         </el-checkbox-group>
       </template>
     </commonTemplate>
@@ -25,7 +26,7 @@
 </template>
 <script>
 export default {
-  name: "check",
+  name: 'check',
   props: {
     propData: {
       type: Object,
@@ -52,7 +53,7 @@ export default {
   },
   methods: {
     upData(val) {
-      this.$emit("upData", val);
+      this.$emit('upData', val);
     }
   },
   created() {
@@ -61,7 +62,7 @@ export default {
       ...this.propData
     };
     if (this.propDataCopy.enum.length != this.propDataCopy.enumNames.length) {
-      this.$message.error("Checkbox的enum和enumNames数量不匹配");
+      this.$message.error('Checkbox的enum和enumNames数量不匹配');
     } else {
       this.propDataCopy.enum.forEach((item, index) => {
         this.checkboxArr = this.checkboxArr.concat({

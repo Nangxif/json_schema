@@ -26,8 +26,7 @@
             :key="index"
             :label="item.value"
             :value="item.key"
-          >
-          </el-option>
+          ></el-option>
         </el-select>
       </template>
     </commonTemplate>
@@ -35,7 +34,7 @@
 </template>
 <script>
 export default {
-  name: "sel",
+  name: 'sel',
   props: {
     propData: {
       type: Object,
@@ -62,7 +61,7 @@ export default {
   },
   methods: {
     upData(val) {
-      this.$emit("upData", val);
+      this.$emit('upData', val);
     }
   },
   created() {
@@ -71,7 +70,7 @@ export default {
       ...this.propData
     };
     if (this.propDataCopy.enum.length != this.propDataCopy.enumNames.length) {
-      this.$message.error("Select的enum和enumNames数量不匹配");
+      this.$message.error('Select的enum和enumNames数量不匹配');
     } else {
       this.propDataCopy.enum.forEach((item, index) => {
         this.selectArr = this.selectArr.concat({

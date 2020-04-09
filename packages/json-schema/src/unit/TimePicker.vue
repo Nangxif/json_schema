@@ -12,15 +12,14 @@
           placeholder="任意时间点"
           @change="change(form[propDataCopy.key])"
           v-bind="attr"
-        >
-        </el-time-picker>
+        ></el-time-picker>
       </template>
     </commonTemplate>
   </div>
 </template>
 <script>
 export default {
-  name: "timerpicker",
+  name: 'timerpicker',
   props: {
     propData: {
       type: Object,
@@ -46,7 +45,7 @@ export default {
   },
   methods: {
     upData(val) {
-      this.$emit("upData", val);
+      this.$emit('upData', val);
     }
   },
   created() {
